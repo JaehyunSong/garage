@@ -373,7 +373,7 @@
 <li><strong>政治勢力</strong>（政党/有力政治家）に対する感情的分極化と<strong>その支持者</strong>に対する分極化
 <ul>
 <li>「<ruby>2번남<rt>イボンナム</rt></ruby>」/「 <ruby>2번녀<rt>イボンニョ</rt></ruby>」、「<ruby>이대남<rt>イデナム</rt></ruby>」、「<ruby>개딸<rt>ケタル</rt></ruby>」などのレッテル貼りと内集団と外集団の区別</li>
-<li><span class="math inline">\(\Rightarrow\)</span> <strong>非エリートへの政治的分極化がもたらす効果は?</strong></li>
+<li><span class="math inline">\(\Rightarrow\)</span> <strong>非エリートへの感情的分極化がもたらす効果は?</strong></li>
 </ul></li>
 </ul>
 
@@ -503,13 +503,19 @@
 <section id="モデル1" class="slide level2">
 <h2>モデル（1）</h2>
 <ul>
-<li><strong>応答変数1</strong>：投票参加の意向（第1波で測定; <span class="math inline">\(\mbox{Intention}_i \in \{1, 2, 3\}\)</span>）</li>
+<li><strong>応答変数1</strong>：投票参加の意向（第1波で測定; <span class="math inline">\(\mbox{Intention}_i \in \{1, 2, 3\}\)</span>）
+<ul>
+<li>線形回帰分析</li>
+</ul></li>
 </ul>
 <p><span class="math display">\[
 \widehat{\mbox{Intention}_i} = \beta_0 + \beta_1 \mbox{AP}_i + \sum_{j = 1}^{J} \gamma_{j}X_{ij}.
 \]</span></p>
 <ul>
-<li><strong>応答変数2</strong>：投票参加（第2波で測定; <span class="math inline">\(\mbox{Turnout}_i \in \{0, 1\}\)</span>）</li>
+<li><strong>応答変数2</strong>：投票参加（第2波で測定; <span class="math inline">\(\mbox{Turnout}_i \in \{0, 1\}\)</span>）
+<ul>
+<li>ロジスティック回帰分析</li>
+</ul></li>
 </ul>
 <p><span class="math display">\[
 \widehat{\mbox{Pr}(\mbox{Trunout}_i = 1)} = \mbox{logit}^{-1}(\beta_0 + \beta_1 \mbox{AP}_i + \sum_{j = 1}^{J} \gamma_{j}X_{ij}).
@@ -523,7 +529,7 @@
 <li>政党、政党の支持者、候補者、候補者の支持者に対する感情温度の基づいて操作化された計4種類（メインの結果は政党に対する感情的分極化）</li>
 <li><span class="math inline">\(\Rightarrow\)</span> 計8モデル（2つの応答変数 <span class="math inline">\(\times\)</span> 4つの説明変数）</li>
 </ul></li>
-<li><strong>共変量</strong>：性別、年齢、最終学歴、世帯収入、出身地域、居住地域、政治関心、内的政治的有効性感覚、外的政治的有効性感覚、保革自己認識</li>
+<li><strong>その他共変量</strong>：性別、年齢、最終学歴、世帯収入、出身地域、居住地域、政治関心、内的政治的有効性感覚、外的政治的有効性感覚、保革自己認識</li>
 <li>2015年国勢調査の性別・世代・地域に基づき、重み付け
 <ul>
 <li>党派性、投票有無、重みなしでも（ほぼ）同じ結果</li>
