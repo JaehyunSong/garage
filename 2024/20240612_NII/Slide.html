@@ -8,7 +8,7 @@
 <link href="Slide_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="Slide_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="Slide_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.43">
+  <meta name="generator" content="quarto-1.5.40">
 
   <meta name="author" content="宋(そん)&nbsp;&nbsp;財泫(じぇひょん)">
   <meta name="dcterms.date" content="2024-06-12">
@@ -406,21 +406,14 @@
 <li>前期科目の履修を強く<strong>推奨</strong>しており、強制はできない。</li>
 <li>履修者：約30人 + TA2名</li>
 </ul></li>
-<li>共通
-<ul>
-<li>いずれも「政治学」との接点はなく、社会科学全般をテーマとしてデータ分析がメイン
-<ul>
-<li>可能であれば授業名を変更し、前期後期セット講義にしたい</li>
-</ul></li>
-</ul></li>
 </ul>
 </section>
-<section id="使用ツール" class="slide level2">
-<h2>使用ツール</h2>
+<section id="使用ツールリソース" class="slide level2">
+<h2>使用ツール・リソース</h2>
 <ol type="1">
 <li>JDCat分析ツール
 <ul>
-<li>IDEはJupyer Notebookを使用せず、R定番のIDEであるRStudio Serverを使用</li>
+<li>IDEはJupyter Notebookを使用せず、R定番のIDEであるRStudio Serverを使用</li>
 <li>分析環境のレポジトリー：<a href="https://github.com/JaehyunSong/Binder_R" class="uri">https://github.com/JaehyunSong/Binder_R</a></li>
 </ul></li>
 <li>講義のサポートページ：<a href="https://www.jaysong.net/r4ps/" class="uri">https://www.jaysong.net/r4ps/</a>
@@ -437,14 +430,6 @@
 <li>後期：『Rによる計量政治学』</li>
 </ul></li>
 </ol>
-</section>
-<section id="課題遂行の流れ" class="slide level2">
-<h2>課題遂行の流れ</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/flow.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
-</figure>
-</div>
 </section>
 <section id="課題の様子" class="slide level2">
 <h2>課題の様子</h2>
@@ -469,11 +454,19 @@
 </div>
 </div>
 </section>
+<section id="課題遂行の流れ" class="slide level2">
+<h2>課題遂行の流れ</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/flow.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</section>
 <section id="jdcat分析ツールのメリット" class="slide level2">
 <h2>JDCat分析ツールのメリット</h2>
 <p>クラウド環境が持つ強み</p>
 <ol type="1">
-<li>持ち込みPCに比べ、同じ環境
+<li>履修者全員が同じ環境で実習が可能
 <ul>
 <li>教員が予め動作を確認しておけば、動作は100%保証される。</li>
 <li>もちろん、サーバー側の問題、キャンパスのネットワーク環境により、全員ダメになる可能性もある。場合によってはローカル版のR + RStudioへの切り替えも考えておく必要がある。</li>
@@ -485,8 +478,8 @@
 </ul></li>
 <li>Rパッケージのインストール、アップデートが比較的自由
 <ul>
-<li>大学のPCだとプロキシサーバー<del>という邪悪な存</del>により、パッケージのインストールが出来ないケースが多い</li>
-<li>ただし、<code>apt</code>が使えないので、ライブラリが求められたらそのパッケージはアウト
+<li>大学のPCだとプロキシサーバー<del>という邪悪な存在</del>により、パッケージのインストールが出来ないケースが多い</li>
+<li>ただし、<code>apt</code>が使えないので、ライブラリが求められてしまうとそのパッケージはアウト
 <ul>
 <li>宋が作成したレポジトリーはよく使われるRパッケージのインストールには困らないように設定はしている。</li>
 </ul></li>
