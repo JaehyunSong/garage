@@ -492,12 +492,155 @@
 </section>
 <section id="因果関係の定義" class="slide level2">
 <h2>因果関係の定義</h2>
+<ul>
+<li>例）薬（<span class="math inline">\(X\)</span>）は熱（<span class="math inline">\(Y\)</span>）を下げる効果があるか
+<ul>
+<li>薬（原因） <span class="math inline">\(\rightarrow\)</span> 熱（結果）</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><span class="math inline">\(i\)</span>さんが薬を飲んだ場合の体温：<span class="math inline">\(Y_i(X_i = 1)\)</span></li>
+<li><span class="math inline">\(i\)</span>さんが薬を飲まなかった場合の体温：<span class="math inline">\(Y_i(X_i = 0)\)</span></li>
+<li><span class="math inline">\(i\)</span>さんにおける薬の<strong>因果効果</strong>：<span class="math inline">\(Y_i(X_i = 1) - Y_i(X_i = 0)\)</span>
+<ul>
+<li>個人・個体における処置効果（individual treatment effect; <strong>ITE</strong>）</li>
+</ul></li>
+</ul>
 </section>
 <section id="因果推論の根本問題" class="slide level2">
 <h2>因果推論の根本問題</h2>
+<ul>
+<li>薬を飲んだ<span class="math inline">\(i\)</span>さんと薬を飲まなかった<span class="math inline">\(j\)</span>さんの比較（<span class="math inline">\(i \neq j\)</span>）
+<ul>
+<li><span class="math inline">\(\rightarrow\)</span> 比較可能</li>
+<li>ただし、体温に差があったとしてもそれが薬の効果か、別の要因が原因かは分からない</li>
+</ul></li>
+<li>薬を飲んだ<span class="math inline">\(i\)</span>さんと薬を飲まなかった<span class="math inline">\(i\)</span>さんの比較
+<ul>
+<li><span class="math inline">\(\rightarrow\)</span> <strong>比較不可能</strong></li>
+</ul></li>
+<li>同じ時間、同じ状態の個人は1回しか観察できない。
+<ul>
+<li>我々は{薬を飲んだ<span class="math inline">\(i\)</span>さん, 薬を飲まなかった<span class="math inline">\(i\)</span>さん}の片方しか観察できないため、ITEのステイは不可能
+<ul>
+<li><span class="math inline">\(\Rightarrow\)</span> <strong>因果推論の根本問題</strong>（fundamental problem of causal inference）</li>
+</ul></li>
+<li>タイムマシーンがあれば解決できるかも知れない</li>
+</ul></li>
+</ul>
+</section>
+<section id="我々にできることは" class="slide level2">
+<h2>我々にできることは</h2>
+<ul>
+<li>やはり我々は「薬を飲んだ<span class="math inline">\(i\)</span>さんと薬を飲まなかった<span class="math inline">\(j\)</span>さんの比較」しかできない。
+<ul>
+<li>同じ<span class="math inline">\(i\)</span>に対する比較ができても、同じタイミングでの同じ状態の<span class="math inline">\(i\)</span>ではないため、別人と考えるべき</li>
+</ul></li>
+<li>しかし、体温に差があったとしてもそれが薬の効果か、別の要因が原因かは分からない。</li>
+<li>もっとたくさんのケースを集めれば良いのでは？
+<ul>
+<li>薬を飲んだ100人と薬を飲まなかった100人と比較なら?</li>
+<li><span class="math inline">\(\Rightarrow\)</span> 集団レベルにおける処置効果：<strong>平均処置効果</strong>（average treatment effect; ATE）
+<ul>
+<li>現代の因果推論の推定対象のほとんどがATE</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>しかし、<strong>信頼できるATEを推定するためには「内生性」への対処が必要</strong></li>
+</ul>
 </section>
 <section id="内生性" class="slide level2">
 <h2>内生性</h2>
+<ul>
+<li>説明変数と誤差項間に相関関係が存在すること</li>
+<li>例）啓発活動（原因）が投票率（結果）に与える影響は?</li>
+<li>啓発活動は投票率を20%p下げる？</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="啓発活動とが投票" class="slide level2">
+<h2>啓発活動とが投票</h2>
+<ul>
+<li>答え：わからない
+<ul>
+<li>破線：啓発活動ありの自治体がもし啓発活動をしなかった場合の投票率
+<ul>
+<li><span class="math inline">\(\Rightarrow\)</span> <strong>反実仮想</strong>（counterfactual）</li>
+</ul></li>
+</ul></li>
+</ul>
+<div>
+
+</div>
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" width="900"></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-3-2.png" class="quarto-figure quarto-figure-center" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="自己選択バイアス" class="slide level2">
+<h2>自己選択バイアス</h2>
+<ul>
+<li><strong>自己選択バイアス</strong>：（self-）selection bias
+<ul>
+<li>処置の有無を被験者が選べる場合生じるバイアス</li>
+</ul></li>
+<li>啓発活動の有無は自治体が決められる。
+<ul>
+<li>元々投票率が高かった自治体：啓発活動の必要性が低い</li>
+<li>元々投票率が低かった自治体：啓発活動の必要性が高い</li>
+<li><span class="math inline">\(\rightarrow\)</span> 啓発活動をしなかったら投票率がもっと低かったかも知れない（シナリオ2）</li>
+</ul></li>
+<li>また、過去の投票率は現在の投票率にも影響を与える。</li>
+<li>つまり、過去の投票率は原因と結果、両方に影響を与える変数
+<ul>
+<li><span class="math inline">\(\Rightarrow\)</span> <strong>交絡要因</strong>（confounder）</li>
+</ul></li>
+</ul>
+</section>
+<section id="交絡要因" class="slide level2">
+<h2>交絡要因</h2>
+<ul>
+<li>啓発活動の有無で投票率を比較したい場合、<strong>交絡要因を揃えてから比較</strong>すべき
+<ul>
+<li>例）過去の平均投票率が約40%だった自治体（これまで啓発活動歴なし）だけに絞って、啓発活動の有無で今回の投票率を比較</li>
+<li>全ての交絡要因が特定できるか?測定可能か?</li>
+<li>交絡要因を揃えて（<span class="math inline">\(=\)</span><strong>統制</strong>して）比較することは難しい</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
+</figure>
+</div>
+</div>
+</div>
 </section></section>
 <section>
 <section id="因果推論の諸手法" class="title-slide slide level1 center">
@@ -710,7 +853,7 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
 </figure>
 </div>
 </div>
@@ -722,7 +865,7 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
 </figure>
 </div>
 </div>
@@ -734,7 +877,7 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
+<p><img data-src="05_Method_Review_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center" width="2400"></p>
 </figure>
 </div>
 </div>
