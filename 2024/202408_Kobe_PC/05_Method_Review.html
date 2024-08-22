@@ -514,7 +514,7 @@
 <li>薬を飲んだ<span class="math inline">\(i\)</span>さんと薬を飲まなかった<span class="math inline">\(j\)</span>さんの比較（<span class="math inline">\(i \neq j\)</span>）
 <ul>
 <li><span class="math inline">\(\rightarrow\)</span> 比較可能</li>
-<li>ただし、体温に差があったとしてもそれが薬の効果か、別の要因が原因かは分からない</li>
+<li>ただし、<span class="math inline">\(i\)</span>さんと<span class="math inline">\(j\)</span>さんは別人だから、体温に差があったとしてもそれが薬の効果か、別の要因が原因かは分からない</li>
 </ul></li>
 <li>薬を飲んだ<span class="math inline">\(i\)</span>さんと薬を飲まなかった<span class="math inline">\(i\)</span>さんの比較
 <ul>
@@ -522,22 +522,23 @@
 </ul></li>
 <li>同じ時間、同じ状態の個人は1回しか観察できない。
 <ul>
-<li>我々は{薬を飲んだ<span class="math inline">\(i\)</span>さん, 薬を飲まなかった<span class="math inline">\(i\)</span>さん}の片方しか観察できないため、ITEのステイは不可能
+<li>我々は{薬を飲んだ<span class="math inline">\(t\)</span>時の<span class="math inline">\(i\)</span>さん, 薬を飲まなかった<span class="math inline">\(t\)</span>時の<span class="math inline">\(i\)</span>さん}の片方しか観察できないため、ITEの推定は不可能
 <ul>
+<li><span class="math inline">\(t\)</span>時の<span class="math inline">\(i\)</span>さんと<span class="math inline">\(u\)</span>時の<span class="math inline">\(i\)</span>さんは別人（<span class="math inline">\(t \neq u\)</span>）</li>
 <li><span class="math inline">\(\Rightarrow\)</span> <strong>因果推論の根本問題</strong>（fundamental problem of causal inference）</li>
 </ul></li>
-<li>タイムマシーンがあれば解決できるかも知れない</li>
 </ul></li>
 </ul>
 </section>
 <section id="我々にできることは" class="slide level2">
 <h2>我々にできることは</h2>
 <ul>
+<li>タイムマシーンがあれば解決できるかも知れないが…</li>
 <li>やはり我々は「薬を飲んだ<span class="math inline">\(i\)</span>さんと薬を飲まなかった<span class="math inline">\(j\)</span>さんの比較」しかできない。
 <ul>
 <li>同じ<span class="math inline">\(i\)</span>に対する比較ができても、同じタイミングでの同じ状態の<span class="math inline">\(i\)</span>ではないため、別人と考えるべき</li>
 </ul></li>
-<li>しかし、体温に差があったとしてもそれが薬の効果か、別の要因が原因かは分からない。</li>
+<li>しかし、<span class="math inline">\(i\)</span>さんと<span class="math inline">\(j\)</span>さんは別人だから、体温に差があったとしてもそれが薬の効果か、別の要因が原因かは分からない。</li>
 <li>もっとたくさんのケースを集めれば良いのでは？
 <ul>
 <li>薬を飲んだ100人と薬を飲まなかった100人と比較なら?</li>
@@ -583,7 +584,7 @@
 <div>
 
 </div>
-<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
+<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-align="center">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
@@ -616,7 +617,7 @@
 <li><span class="math inline">\(\rightarrow\)</span> 啓発活動をしなかったら投票率がもっと低かったかも知れない（シナリオ2）</li>
 </ul></li>
 <li>また、過去の投票率は現在の投票率にも影響を与える。</li>
-<li>つまり、過去の投票率は原因と結果、両方に影響を与える変数
+<li>つまり、過去の投票率は<u>原因と結果、両方に影響を与える</u>変数
 <ul>
 <li><span class="math inline">\(\Rightarrow\)</span> <strong>交絡要因</strong>（confounder）</li>
 </ul></li>
@@ -658,6 +659,7 @@
 <li>同質なグループの作り方：<strong>無作為割当</strong>
 <ul>
 <li>無作為「抽出」とは別概念</li>
+<li>同じ人は作れないが（ほぼ）同じ集団は作れる。</li>
 </ul></li>
 <li><strong>実験</strong>：無作為割当によって作られた複数のグループに異なる刺激・処置を施し、結果の差を比較する方法
 <ul>
