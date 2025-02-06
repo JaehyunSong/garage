@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="宋財泫">
 
-<title>2&nbsp; JDCat分析ツール（導入） – KUT冬季集中講義（宋）サポートページ</title>
+<title>KUT冬季集中講義（宋）サポートページ</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./JDCat_launch.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./JDCat_Installation.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -72,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./JDCat_Installation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">JDCat分析ツール（導入）</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">はじめに</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -108,13 +108,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">はじめに</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./JDCat_Installation.html" class="sidebar-item-text sidebar-link active">
+  <a href="./JDCat_Installation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">JDCat分析ツール（導入）</span></span></a>
   </div>
 </li>
@@ -129,40 +129,39 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">目次</h2>
-   
-  <ul>
-  <li><a href="#注意事項必ず読むこと" id="toc-注意事項必ず読むこと" class="nav-link active" data-scroll-target="#注意事項必ず読むこと"><span class="header-section-number">2.1</span> 注意事項（必ず読むこと！）</a></li>
-  <li><a href="#step-1.-orthrosアカウントの作成" id="toc-step-1.-orthrosアカウントの作成" class="nav-link" data-scroll-target="#step-1.-orthrosアカウントの作成"><span class="header-section-number">2.2</span> Step 1. Orthrosアカウントの作成</a></li>
-  <li><a href="#step-2.-サーバーの起動" id="toc-step-2.-サーバーの起動" class="nav-link" data-scroll-target="#step-2.-サーバーの起動"><span class="header-section-number">2.3</span> Step 2. サーバーの起動</a></li>
-  <li><a href="#step-3.-rstudioの設定" id="toc-step-3.-rstudioの設定" class="nav-link" data-scroll-target="#step-3.-rstudioの設定"><span class="header-section-number">2.4</span> Step 3. RStudioの設定</a>
-  <ul class="collapse">
-  <li><a href="#general" id="toc-general" class="nav-link" data-scroll-target="#general"><span class="header-section-number">2.4.1</span> General</a></li>
-  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code"><span class="header-section-number">2.4.2</span> Code</a></li>
-  <li><a href="#console" id="toc-console" class="nav-link" data-scroll-target="#console"><span class="header-section-number">2.4.3</span> Console</a></li>
-  <li><a href="#appearance" id="toc-appearance" class="nav-link" data-scroll-target="#appearance"><span class="header-section-number">2.4.4</span> Appearance</a></li>
-  <li><a href="#pane-layout" id="toc-pane-layout" class="nav-link" data-scroll-target="#pane-layout"><span class="header-section-number">2.4.5</span> Pane Layout</a></li>
-  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="header-section-number">2.4.6</span> Packages</a></li>
-  <li><a href="#r-markdown" id="toc-r-markdown" class="nav-link" data-scroll-target="#r-markdown"><span class="header-section-number">2.4.7</span> R Markdown</a></li>
-  </ul></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">JDCat分析ツール（導入）</span></h1>
+<h1 class="title">KUT冬季集中講義（宋）サポートページ</h1>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">著者</div>
+  <div class="quarto-title-meta-heading">所属</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author"><a href="https://www.jaysong.net/">宋財泫</a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            関西大学
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">更新日</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025年 2月 6日</p>
+    </div>
+  </div>
   
     
   </div>
@@ -172,129 +171,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="注意事項必ず読むこと" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="注意事項必ず読むこと"><span class="header-section-number">2.1</span> 注意事項（必ず読むこと！）</h2>
-<ul>
-<li>本文書はクラウド版のRとRStudio（JDCat分析ツール）の導入方法を紹介する。</li>
-<li>大雑把にいえば国立情報学研究所のサーバーに自分の作業スペースを確保する作業であるが、わかりやすくいうと「<strong>スマホにアプリを入れる</strong>」作業とほぼ同じだ。</li>
-<li>アプリを使う度にアプリをApp Storeからダウンロード&amp;インストールする人はいないだろう。インストールは1回だけで十分だ。これも同じだ。<strong>本文書のStep 1からStep 3は実行中に何らかの問題が発生しない限り1回のみ行うこと</strong>（担当教員の指示があれば、指示に従うこと）。</li>
-</ul>
-</section>
-<section id="step-1.-orthrosアカウントの作成" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="step-1.-orthrosアカウントの作成"><span class="header-section-number">2.2</span> Step 1. Orthrosアカウントの作成</h2>
-<ul>
-<li>Orthrosのホームーページへアクセスし、アカウントを作成する。
-<ul>
-<li><a href="https://ui.orthros.gakunin.nii.ac.jp/" class="external" target="_blank">https://ui.orthros.gakunin.nii.ac.jp/</a></li>
-</ul></li>
-<li><strong>必ず大学のメールアドレス（<code>@ugs.kochi-tech.ac.jp</code>で終わるアドレス）で登録すること！！</strong></li>
-</ul>
-</section>
-<section id="step-2.-サーバーの起動" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="step-2.-サーバーの起動"><span class="header-section-number">2.3</span> Step 2. サーバーの起動</h2>
-<ol type="1">
-<li>以下のURLにアクセスする。
-<ul>
-<li><a href="https://binder.cs.rcos.nii.ac.jp/v2/gh/JaehyunSong/KUT_Binder/HEAD" class="uri">https://binder.cs.rcos.nii.ac.jp/v2/gh/JaehyunSong/KUT_Binder/HEAD</a></li>
-</ul></li>
-<li>所属機関の選択で「Orthros」を入力し、選択する。 <img src="figs/jdcat1.png" class="img-fluid quarto-figure quarto-figure-center"></li>
-<li>Orthrosのアカウント情報を入力し、ログインする。
-<ul>
-<li>アカウント作成直後であれば、ログイン画面は表示されない可能性が高い。</li>
-</ul></li>
-<li>SPへの属性提供に対する同意画面が表示される。上の選択肢のままだと今後、ログインする度にこの画面が表示される。下の選択肢を選択すると今後、この画面は表示されない。 <img src="figs/jdcat2.png" class="img-fluid quarto-figure quarto-figure-center"></li>
-<li>しばらく待つとJupyter Labのホーム画面が表示される（所要時間：約5分）。 <img src="figs/jdcat3.png" class="img-fluid quarto-figure quarto-figure-center"></li>
-<li>画面上のRStudioをクリックするとRStudioが起動される。 <img src="figs/jdcat4.png" class="img-fluid quarto-figure quarto-figure-center"></li>
-</ol>
-</section>
-<section id="step-3.-rstudioの設定" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="step-3.-rstudioの設定"><span class="header-section-number">2.4</span> Step 3. RStudioの設定</h2>
-<p>　RStudioはToolsメニューのGlobal Options…からカスタマイズできる。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom0.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<section id="general" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="general"><span class="header-section-number">2.4.1</span> General</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom1_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom1_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="code" class="level3" data-number="2.4.2">
-<h3 data-number="2.4.2" class="anchored" data-anchor-id="code"><span class="header-section-number">2.4.2</span> Code</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom2_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom2_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom2_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="console" class="level3" data-number="2.4.3">
-<h3 data-number="2.4.3" class="anchored" data-anchor-id="console"><span class="header-section-number">2.4.3</span> Console</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="appearance" class="level3" data-number="2.4.4">
-<h3 data-number="2.4.4" class="anchored" data-anchor-id="appearance"><span class="header-section-number">2.4.4</span> Appearance</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom4.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="pane-layout" class="level3" data-number="2.4.5">
-<h3 data-number="2.4.5" class="anchored" data-anchor-id="pane-layout"><span class="header-section-number">2.4.5</span> Pane Layout</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom5.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="packages" class="level3" data-number="2.4.6">
-<h3 data-number="2.4.6" class="anchored" data-anchor-id="packages"><span class="header-section-number">2.4.6</span> Packages</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom6.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="r-markdown" class="level3" data-number="2.4.7">
-<h3 data-number="2.4.7" class="anchored" data-anchor-id="r-markdown"><span class="header-section-number">2.4.7</span> R Markdown</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom7_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom7_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>　すべての設定が終わったらOKをクリックする。</p>
+<center>
+<a href="https://jupyter.cs.rcos.nii.ac.jp/" class="btn btn-primary btn-lg" target="_blank" role="button"><i class="bi bi-terminal"></i>&nbsp;&nbsp;&nbsp;JDCat分析ツールの起動</a><br><span style="font-size:0.75em"></span>
+</center>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -716,13 +597,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="はじめに">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">はじめに</span></span>
-      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./JDCat_launch.html" class="pagination-link" aria-label="JDCat分析ツール（起動）">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">JDCat分析ツール（起動）</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./JDCat_Installation.html" class="pagination-link" aria-label="JDCat分析ツール（導入）">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">JDCat分析ツール（導入）</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

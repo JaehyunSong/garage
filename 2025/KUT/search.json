@@ -1,0 +1,82 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "KUT冬季集中講義（宋）サポートページ",
+    "section": "",
+    "text": "JDCat分析ツールの起動",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>はじめに</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_Installation.html",
+    "href": "JDCat_Installation.html",
+    "title": "2  JDCat分析ツール（導入）",
+    "section": "",
+    "text": "2.1 注意事項（必ず読むこと！）",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_Installation.html#注意事項必ず読むこと",
+    "href": "JDCat_Installation.html#注意事項必ず読むこと",
+    "title": "2  JDCat分析ツール（導入）",
+    "section": "",
+    "text": "本文書はクラウド版のRとRStudio（JDCat分析ツール）の導入方法を紹介する。\n大雑把にいえば国立情報学研究所のサーバーに自分の作業スペースを確保する作業であるが、わかりやすくいうと「スマホにアプリを入れる」作業とほぼ同じだ。\nアプリを使う度にアプリをApp Storeからダウンロード&インストールする人はいないだろう。インストールは1回だけで十分だ。これも同じだ。本文書のStep 1からStep 3は実行中に何らかの問題が発生しない限り1回のみ行うこと（担当教員の指示があれば、指示に従うこと）。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_Installation.html#step-1.-orthrosアカウントの作成",
+    "href": "JDCat_Installation.html#step-1.-orthrosアカウントの作成",
+    "title": "2  JDCat分析ツール（導入）",
+    "section": "2.2 Step 1. Orthrosアカウントの作成",
+    "text": "2.2 Step 1. Orthrosアカウントの作成\n\nOrthrosのホームーページへアクセスし、アカウントを作成する。\n\nhttps://ui.orthros.gakunin.nii.ac.jp/\n\n必ず大学のメールアドレス（@ugs.kochi-tech.ac.jpで終わるアドレス）で登録すること！！",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_Installation.html#step-2.-サーバーの起動",
+    "href": "JDCat_Installation.html#step-2.-サーバーの起動",
+    "title": "2  JDCat分析ツール（導入）",
+    "section": "2.3 Step 2. サーバーの起動",
+    "text": "2.3 Step 2. サーバーの起動\n\n以下のURLにアクセスする。\n\nhttps://binder.cs.rcos.nii.ac.jp/v2/gh/JaehyunSong/KUT_Binder/HEAD\n\n所属機関の選択で「Orthros」を入力し、選択する。 \nOrthrosのアカウント情報を入力し、ログインする。\n\nアカウント作成直後であれば、ログイン画面は表示されない可能性が高い。\n\nSPへの属性提供に対する同意画面が表示される。上の選択肢のままだと今後、ログインする度にこの画面が表示される。下の選択肢を選択すると今後、この画面は表示されない。 \nしばらく待つとJupyter Labのホーム画面が表示される（所要時間：約5分）。 \n画面上のRStudioをクリックするとRStudioが起動される。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_Installation.html#step-3.-rstudioの設定",
+    "href": "JDCat_Installation.html#step-3.-rstudioの設定",
+    "title": "2  JDCat分析ツール（導入）",
+    "section": "2.4 Step 3. RStudioの設定",
+    "text": "2.4 Step 3. RStudioの設定\n　RStudioはToolsメニューのGlobal Options…からカスタマイズできる。\n\n\n\n\n\n\n2.4.1 General\n\n\n\n\n\n\n\n\n\n\n\n\n2.4.2 Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2.4.3 Console\n\n\n\n\n\n\n\n2.4.4 Appearance\n\n\n\n\n\n\n\n2.4.5 Pane Layout\n\n\n\n\n\n\n\n2.4.6 Packages\n\n\n\n\n\n\n\n2.4.7 R Markdown\n\n\n\n\n\n\n\n\n\n\n　すべての設定が終わったらOKをクリックする。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_launch.html",
+    "href": "JDCat_launch.html",
+    "title": "3  JDCat分析ツール（起動）",
+    "section": "",
+    "text": "3.1 JDCat分析ツールの起動",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>JDCat分析ツール（起動）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_launch.html#jdcat分析ツールの起動",
+    "href": "JDCat_launch.html#jdcat分析ツールの起動",
+    "title": "3  JDCat分析ツール（起動）",
+    "section": "",
+    "text": "以下のURLへアクセスする。ブラウザーのお気に入りに追加しておいても良いだろう。\n\nhttps://jupyter.cs.rcos.nii.ac.jp/\n\n所属機関の選択で「Orthros」を入力し、選択する。\n\n\n\n\n\n\n\nOrthrosアカウント情報を入力し、ログインする。\nSPへの属性提供に対する同意画面が表示されるかも知れない。上の選択肢のままだと今後、ログインする度にこの画面が表示される。下の選択肢を選択すると今後、この画面は表示されない。\n\n\n\n\n\n\n\nサーバリストにあるURLをクリックすると、Jupyter Labのホーム画面が表示される。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>JDCat分析ツール（起動）</span>"
+    ]
+  }
+]
