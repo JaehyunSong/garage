@@ -54,7 +54,7 @@
     "href": "JDCat_Installation.html#step-3.-rstudioの設定",
     "title": "2  JDCat分析ツール（導入）",
     "section": "2.4 Step 3. RStudioの設定",
-    "text": "2.4 Step 3. RStudioの設定\n　RStudioはToolsメニューのGlobal Options…からカスタマイズできる。\n\n\n\n\n\n\n2.4.1 General\n\n\n\n\n\n\n\n\n\n\n\n\n2.4.2 Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2.4.3 Console\n\n\n\n\n\n\n\n2.4.4 Appearance\n\n\n\n\n\n\n\n2.4.5 Pane Layout\n\n\n\n\n\n\n\n2.4.6 Packages\n\n\n\n\n\n\n\n2.4.7 R Markdown\n\n\n\n\n\n\n\n\n\n\n　すべての設定が終わったらOKをクリックする。",
+    "text": "2.4 Step 3. RStudioの設定\n\n\n\n\n\n\nRStudioについて\n\n\n\n　以下の作業が面倒な人はRStudioのTerminalタブ（計算結果が表示される領域のタブとして存在する）へ移動し、以下のコマンドを入力し、RStudioを再起動すれば一瞬で完了する。\nmv rstudio-prefs.json ~/.config/rstudio/rstudio-prefs.json\n　ただし、「Appearnce」の項目は好みの問題なので自分に合ったスタイルを選択しよう。\n\n\n　RStudioはToolsメニューのGlobal Options…からカスタマイズできる。\n\n\n\n\n\n\n2.4.1 General\n\n\n\n\n\n\n\n\n\n\n\n\n2.4.2 Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2.4.3 Console\n\n\n\n\n\n\n\n2.4.4 Appearance\n\n\n\n\n\n\n\n2.4.5 Pane Layout\n\n\n\n\n\n\n\n2.4.6 Packages\n\n\n\n\n\n\n\n2.4.7 R Markdown\n\n\n\n\n\n\n\n\n\n\n　すべての設定が終わったらOKをクリックする。",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
     ]
@@ -77,6 +77,16 @@
     "text": "以下のURLへアクセスする。ブラウザーのお気に入りに追加しておいても良いだろう。\n\nhttps://jupyter.cs.rcos.nii.ac.jp/\n\n所属機関の選択で「Orthros」を入力し、選択する。\n\n\n\n\n\n\n\nOrthrosアカウント情報を入力し、ログインする。\nSPへの属性提供に対する同意画面が表示されるかも知れない。上の選択肢のままだと今後、ログインする度にこの画面が表示される。下の選択肢を選択すると今後、この画面は表示されない。\n\n\n\n\n\n\n\nサーバリストにあるURLをクリックすると、Jupyter Labのホーム画面が表示される。",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>JDCat分析ツール（起動）</span>"
+    ]
+  },
+  {
+    "objectID": "JDCat_Installation.html#step-4.-rstudioの終了",
+    "href": "JDCat_Installation.html#step-4.-rstudioの終了",
+    "title": "2  JDCat分析ツール（導入）",
+    "section": "2.5 Step 4. RStudioの終了",
+    "text": "2.5 Step 4. RStudioの終了\n\n\n\n\n\n\nRStudioは以下のやり方で終了しよう\n\n\n\n　もう一度強調するが、JDCat分析ツールはクラウドサービスである。RもRStudioも国立情報学研究所のサーバーで動いており、我々のPCはその処理結果を映しているだけだ。以下のやり方でRStudioを終了しない、つまりブラウザーと閉じることは正しい終了方法ではない。それは自分のPCに映っていないだけであり、国立情報学研究所のサーバー内でR/RStudioはずっと動いてしまう。必ず以下の手順に従い、セッションを終了してからブラウザーを閉じよう。\n\n\n手順1: RStudio画面右上のオレンジ色のボタンをクリックする。\n\n\n\n\n\n手順2: 以下のダイアログが表示されたらタブ、またはウィンドウを閉じる。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
     ]
   }
 ]

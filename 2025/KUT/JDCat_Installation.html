@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -147,6 +181,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="header-section-number">2.4.6</span> Packages</a></li>
   <li><a href="#r-markdown" id="toc-r-markdown" class="nav-link" data-scroll-target="#r-markdown"><span class="header-section-number">2.4.7</span> R Markdown</a></li>
   </ul></li>
+  <li><a href="#step-4.-rstudioの終了" id="toc-step-4.-rstudioの終了" class="nav-link" data-scroll-target="#step-4.-rstudioの終了"><span class="header-section-number">2.5</span> Step 4. RStudioの終了</a></li>
   </ul>
 </nav>
     </div>
@@ -209,6 +244,21 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="step-3.-rstudioの設定" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="step-3.-rstudioの設定"><span class="header-section-number">2.4</span> Step 3. RStudioの設定</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+RStudioについて
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>　以下の作業が面倒な人はRStudioのTerminalタブ（計算結果が表示される領域のタブとして存在する）へ移動し、以下のコマンドを入力し、RStudioを再起動すれば一瞬で完了する。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> rstudio-prefs.json ~/.config/rstudio/rstudio-prefs.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>　ただし、「Appearnce」の項目は好みの問題なので自分に合ったスタイルを選択しよう。</p>
+</div>
+</div>
 <p>　RStudioはToolsメニューのGlobal Options…からカスタマイズできる。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -291,9 +341,37 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p>　すべての設定が終わったらOKをクリックする。</p>
-
-
 </section>
+</section>
+<section id="step-4.-rstudioの終了" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="step-4.-rstudioの終了"><span class="header-section-number">2.5</span> Step 4. RStudioの終了</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+RStudioは以下のやり方で終了しよう
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>　もう一度強調するが、JDCat分析ツールはクラウドサービスである。RもRStudioも国立情報学研究所のサーバーで動いており、我々のPCはその処理結果を映しているだけだ。以下のやり方でRStudioを終了しない、つまりブラウザーと閉じることは正しい終了方法ではない。それは自分のPCに映っていないだけであり、国立情報学研究所のサーバー内でR/RStudioはずっと動いてしまう。必ず以下の手順に従い、セッションを終了してからブラウザーを閉じよう。</p>
+</div>
+</div>
+<p><strong>手順1:</strong> RStudio画面右上のオレンジ色のボタンをクリックする。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/RStudio_logout1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+<p><strong>手順2:</strong> 以下のダイアログが表示されたらタブ、またはウィンドウを閉じる。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/RStudio_logout2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
