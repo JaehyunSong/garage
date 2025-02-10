@@ -44,7 +44,7 @@
     "href": "JDCat_Installation.html#step-2.-サーバーの起動",
     "title": "2  JDCat分析ツール（導入）",
     "section": "2.3 Step 2. サーバーの起動",
-    "text": "2.3 Step 2. サーバーの起動\n\n以下のURLにアクセスする。\n\nhttps://binder.cs.rcos.nii.ac.jp/v2/gh/JaehyunSong/KUT_Binder/HEAD\n\n所属機関の選択で「Orthros」を入力し、選択する。 \nOrthrosのアカウント情報を入力し、ログインする。\n\nアカウント作成直後であれば、ログイン画面は表示されない可能性が高い。\n\nSPへの属性提供に対する同意画面が表示される。上の選択肢のままだと今後、ログインする度にこの画面が表示される。下の選択肢を選択すると今後、この画面は表示されない。 \nしばらく待つとJupyter Labのホーム画面が表示される（所要時間：約5分）。 \n画面上のRStudioをクリックするとRStudioが起動される。",
+    "text": "2.3 Step 2. サーバーの起動\n\n以下のURLにアクセスする。\n\nhttps://binder.cs.rcos.nii.ac.jp/v2/gh/JaehyunSong/KUT_Binder/HEAD\n\n所属機関の選択で「Orthros」を入力し、選択する。\n\n\n\n\n\n\n\nOrthrosのアカウント情報を入力し、ログインする。\n\nアカウント作成直後であれば、ログイン画面は表示されない可能性が高い。\n\nSPへの属性提供に対する同意画面が表示される。上の選択肢のままだと今後、ログインする度にこの画面が表示される。下の選択肢を選択すると今後、この画面は表示されない。\n\n\n\n\n\n\n\nしばらく待つとJupyter Labのホーム画面が表示される（所要時間：約5分）。\n\n\n\n\n\n\n\n画面上のRStudioをクリックするとRStudioが起動される。",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>JDCat分析ツール（導入）</span>"
     ]
