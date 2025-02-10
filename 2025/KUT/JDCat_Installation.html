@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -171,16 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#注意事項必ず読むこと" id="toc-注意事項必ず読むこと" class="nav-link active" data-scroll-target="#注意事項必ず読むこと"><span class="header-section-number">2.1</span> 注意事項（必ず読むこと！）</a></li>
   <li><a href="#step-1.-orthrosアカウントの作成" id="toc-step-1.-orthrosアカウントの作成" class="nav-link" data-scroll-target="#step-1.-orthrosアカウントの作成"><span class="header-section-number">2.2</span> Step 1. Orthrosアカウントの作成</a></li>
   <li><a href="#step-2.-サーバーの起動" id="toc-step-2.-サーバーの起動" class="nav-link" data-scroll-target="#step-2.-サーバーの起動"><span class="header-section-number">2.3</span> Step 2. サーバーの起動</a></li>
-  <li><a href="#step-3.-rstudioの設定" id="toc-step-3.-rstudioの設定" class="nav-link" data-scroll-target="#step-3.-rstudioの設定"><span class="header-section-number">2.4</span> Step 3. RStudioの設定</a>
-  <ul class="collapse">
-  <li><a href="#general" id="toc-general" class="nav-link" data-scroll-target="#general"><span class="header-section-number">2.4.1</span> General</a></li>
-  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code"><span class="header-section-number">2.4.2</span> Code</a></li>
-  <li><a href="#console" id="toc-console" class="nav-link" data-scroll-target="#console"><span class="header-section-number">2.4.3</span> Console</a></li>
-  <li><a href="#appearance" id="toc-appearance" class="nav-link" data-scroll-target="#appearance"><span class="header-section-number">2.4.4</span> Appearance</a></li>
-  <li><a href="#pane-layout" id="toc-pane-layout" class="nav-link" data-scroll-target="#pane-layout"><span class="header-section-number">2.4.5</span> Pane Layout</a></li>
-  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="header-section-number">2.4.6</span> Packages</a></li>
-  <li><a href="#r-markdown" id="toc-r-markdown" class="nav-link" data-scroll-target="#r-markdown"><span class="header-section-number">2.4.7</span> R Markdown</a></li>
-  </ul></li>
+  <li><a href="#step-3.-rstudioの設定" id="toc-step-3.-rstudioの設定" class="nav-link" data-scroll-target="#step-3.-rstudioの設定"><span class="header-section-number">2.4</span> Step 3. RStudioの設定</a></li>
   <li><a href="#step-4.-rstudioの終了" id="toc-step-4.-rstudioの終了" class="nav-link" data-scroll-target="#step-4.-rstudioの終了"><span class="header-section-number">2.5</span> Step 4. RStudioの終了</a></li>
   </ul>
 </nav>
@@ -244,92 +201,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-3.-rstudioの設定" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="step-3.-rstudioの設定"><span class="header-section-number">2.4</span> Step 3. RStudioの設定</h2>
-<p>　以下の作業が面倒な人はRStudioのTerminalタブ（計算結果が表示される領域のタブとして存在する）へ移動し、以下のコマンドを入力し、RStudioを再起動すれば一瞬で完了する。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> rstudio-prefs.json ~/.config/rstudio/rstudio-prefs.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>　ただし、「Appearnce」の項目は好みの問題なので自分に合ったスタイルを選択しよう。</p>
 <p>　RStudioはToolsメニューのGlobal Options…からカスタマイズできる。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figs/custom0.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
-<section id="general" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="general"><span class="header-section-number">2.4.1</span> General</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom1_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom1_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="code" class="level3" data-number="2.4.2">
-<h3 data-number="2.4.2" class="anchored" data-anchor-id="code"><span class="header-section-number">2.4.2</span> Code</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom2_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom2_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom2_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="console" class="level3" data-number="2.4.3">
-<h3 data-number="2.4.3" class="anchored" data-anchor-id="console"><span class="header-section-number">2.4.3</span> Console</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="appearance" class="level3" data-number="2.4.4">
-<h3 data-number="2.4.4" class="anchored" data-anchor-id="appearance"><span class="header-section-number">2.4.4</span> Appearance</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom4.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="pane-layout" class="level3" data-number="2.4.5">
-<h3 data-number="2.4.5" class="anchored" data-anchor-id="pane-layout"><span class="header-section-number">2.4.5</span> Pane Layout</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom5.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="packages" class="level3" data-number="2.4.6">
-<h3 data-number="2.4.6" class="anchored" data-anchor-id="packages"><span class="header-section-number">2.4.6</span> Packages</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom6.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="r-markdown" class="level3" data-number="2.4.7">
-<h3 data-number="2.4.7" class="anchored" data-anchor-id="r-markdown"><span class="header-section-number">2.4.7</span> R Markdown</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom7_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figs/custom7_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>　すべての設定が終わったらOKをクリックする。</p>
-</section>
+<p>　左のリストからAppearnceを選択し、好きなデザインにカスタマイズしよう。フォントサイズは大きめの方が誤字・脱字が発見しやすい。すべての設定が終わったらOKをクリックする。</p>
 </section>
 <section id="step-4.-rstudioの終了" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="step-4.-rstudioの終了"><span class="header-section-number">2.5</span> Step 4. RStudioの終了</h2>
