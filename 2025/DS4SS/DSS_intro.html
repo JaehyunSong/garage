@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<script src="DSS_intro_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DSS_intro_files/libs/quarto-html/tabby.min.js"></script>
+<script src="DSS_intro_files/libs/quarto-html/popper.min.js"></script>
+<script src="DSS_intro_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="DSS_intro_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DSS_intro_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="DSS_intro_files/libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
+
+  <meta name="author" content="宋財泫（関西大学）">
+  <title>専門演習</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="DSS_intro_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="DSS_intro_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="DSS_intro_files/libs/revealjs/dist/theme/quarto-98aa5101baa362304dcad6fc8e2518ad.css">
+  <link href="DSS_intro_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="DSS_intro_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="DSS_intro_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="DSS_intro_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">専門演習</h1>
+  <p class="subtitle">『新・社会科学のためのデータ分析入門　導入編』第1章</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+宋財泫（関西大学） 
+</div>
+</div>
+</div>
+
+</section>
+<section id="本日の狙い" class="slide level2">
+<h2>本日の狙い</h2>
+<ul>
+<li>素晴らしい本だが、コードの書き方が古い
+<ul>
+<li>近年、当たり前のように使われているパッケージを使わず、R内蔵関数のみで対応</li>
+<li>色褪せないので良いが、…</li>
+<li>一方、宋の実習科目はトレンディな書き方（={tidyverse}パッケージを積極的に使っていく）</li>
+</ul></li>
+<li>ローカル版のR/RStudioの使用が前提
+<ul>
+<li>宋の実習科目はクラウド版を使用</li>
+</ul></li>
+<li>R/RStudioの使い方の説明が雑</li>
+<li>本日の内容は宋の講義スタイルと整合性をもたせることが目的（中身は変わらない）</li>
+</ul>
+</section>
+<section>
+<section id="なぜデータ分析か" class="title-slide slide level1 center">
+<h1><strong>1</strong> なぜ「データ分析」か</h1>
+
+</section>
+<section id="なぜデータ分析か-本書の構成" class="slide level2">
+<h2>なぜ「データ分析」か &amp; 本書の構成</h2>
+<p>pp.1-7を参照すること</p>
+</section></section>
+<section>
+<section id="準備" class="title-slide slide level1 center">
+<h1><strong>2</strong> 準備</h1>
+
+</section>
+<section id="rrstudioの導入" class="slide level2">
+<h2>R/RStudioの導入</h2>
+<p><span class="alert"><strong>JDCat分析ツール</strong></span>（クラウド版のR/RStudio）を使用</p>
+<ul>
+<li>導入方法は「<a href="https://www.jaysong.net/r4ps/materials/micro/r.html">ミクロ政治データ分析実習</a>」にて解説済み</li>
+<li>これからRを極めたい人は自分のPCにR/RStudioをインストールしても良い
+<ul>
+<li>『私たちのR』の第<a href="https://www.jaysong.net/RBook/installation.html">2</a>・<a href="https://www.jaysong.net/RBook/ide.html">3</a>・<a href="https://www.jaysong.net/RBook/r_customize.html">4</a>章を参照するか、宋に相談</li>
+</ul></li>
+</ul>
+</section>
+<section id="rstudioの構成" class="slide level2">
+<h2>RStudioの構成</h2>
+<ul>
+<li>RStudio画面はPane（ペイン）とTab（タブ）で構成される。</li>
+<li><span class="alert"><strong>ペイン</strong></span>（Pane）：分割された画面内の<strong>区画</strong>であり、デフォルトでは4つ
+<ul>
+<li>ただ、左下ペインは潰し、コードペインをできる限り大きめするのが流行り</li>
+</ul></li>
+<li><span class="alert"><strong>タブ</strong></span>（Tab）：各ペイン内にタブが存在
+<ul>
+<li>ペインは常に画面上に表示されるが、同じペイン内のタブは1つしか表示できない[^タブを別のペインに移動すれば、同時に表示可能]</li>
+<li>例）右上のペインは「Console」タブ、「Terminal」タブ、「Background Jobs」タブで構成</li>
+</ul></li>
+<li>ペインとタブは自分でカスタマイズできる</li>
+</ul>
+</section>
+<section id="rstudioの使い方" class="slide level2">
+<h2>RStudioの使い方</h2>
+<p>「コードをどこに書くか」によって使い方が変わる</p>
+<ol type="1">
+<li>Consoleタブに直接入力
+<ul>
+<li>電卓用途で使うならこちらが便利</li>
+</ul></li>
+<li>コードペインから実行
+<ul>
+<li>数行以上のコードを書くならこちらが便利</li>
+<li>実行したいコードの行にカーソルを合わせ、Ctrl + Enter
+<ul>
+<li>macOSなら⌘ + Return</li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="プロジェクトの作成と活用" class="slide level2">
+<h2>プロジェクトの作成と活用</h2>
+<p>本書学習用のプロジェクトを作成</p>
+<ul>
+<li>プロジェクト名は何でも良い
+<ul>
+<li>書名は<strong>D</strong>ata <strong>A</strong>nalysis for <strong>S</strong>ocial <strong>S</strong>cienceなので「<code>da4ss</code>」か「<code>DA4SS</code>」で良いかも</li>
+<li>ゼミの実習だから「<code>zemi</code>」とか「<code>seminar</code>」でも良い</li>
+<li><code>song_sensei_maji_kakkoii</code>でも良い</li>
+</ul></li>
+<li>プロジェクトの作成と開き方は「ミクロ政治データ分析実習」にて解説済み</li>
+</ul>
+</section>
+<section id="実習ファイルの入手" class="slide level2">
+<h2>実習ファイルの入手</h2>
+<p>以下の作業は1回だけで十分</p>
+<ol type="1">
+<li>教科書の公式ページからデータをダウンロードし、解凍する。
+<ul>
+<li>公式HPのURLはLMSにも掲載されている。</li>
+</ul></li>
+<li>プロジェクトフォルダー内にデータ格納用のフォルダーを作成する。
+<ul>
+<li>フォルダー名は任意（<code>Data</code>とか<code>data</code>など）</li>
+</ul></li>
+<li>データフォルダーに解凍したファイルを入れる。
+<ul>
+<li>JDCat分析ツールを使用する場合、データフォルダーに回答したファイルをアップロードする。</li>
+</ul></li>
+</ol>
+</section>
+<section id="予習実習の過程をquartoで残す" class="slide level2">
+<h2>予習（実習）の過程をQuartoで残す</h2>
+<ul>
+<li>Quartoの使い方は「ミクロ政治データ分析実習」で解説済み</li>
+<li>適当に空のQuarto documentを作成し、既存のYAMLヘッダーを以下の内容で置き換える<sup>1</sup></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href=""></a><span class="pp">---</span></span>
+<span id="cb1-2"><a href=""></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"『新・社会科学のためのデータ分析入門 [導入編]』"</span></span>
+<span id="cb1-3"><a href=""></a><span class="fu">subtitle</span><span class="kw">:</span><span class="at"> </span><span class="st">"第1章「イントロダクション」"</span></span>
+<span id="cb1-4"><a href=""></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"情21-0047 関大花子"</span></span>
+<span id="cb1-5"><a href=""></a><span class="fu">date</span><span class="kw">:</span><span class="at"> today</span></span>
+<span id="cb1-6"><a href=""></a><span class="fu">lang</span><span class="kw">:</span><span class="at"> ja</span></span>
+<span id="cb1-7"><a href=""></a><span class="fu">knitr</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb1-8"><a href=""></a><span class="at">  </span><span class="fu">opts_chunk</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb1-9"><a href=""></a><span class="at">    </span><span class="fu">dev</span><span class="kw">:</span><span class="at"> </span><span class="st">"ragg_png"</span></span>
+<span id="cb1-10"><a href=""></a><span class="at">    </span><span class="fu">fig.align</span><span class="kw">:</span><span class="at"> </span><span class="st">"center"</span></span>
+<span id="cb1-11"><a href=""></a><span class="at">    </span><span class="fu">dpi</span><span class="kw">:</span><span class="at"> </span><span class="dv">300</span></span>
+<span id="cb1-12"><a href=""></a><span class="at">    </span><span class="fu">error</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb1-13"><a href=""></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb1-14"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb1-15"><a href=""></a><span class="at">    </span><span class="fu">self-contained</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb1-16"><a href=""></a><span class="pp">---</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>LMSの「今井・イレーナ（2025）の実習用データ」にもあるので、そこからコピペしよう</p></li></ol></aside></section>
+<section id="デキる人はマウスを使わない" class="slide level2">
+<h2>デキる人はマウスを使わない</h2>
+<p>便利なショートカット</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">機能</th>
+<th style="text-align: center;">Windows</th>
+<th style="text-align: center;">macOS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>.qmd</code>ファイルのレンダー</td>
+<td style="text-align: center;">Ctrl+Alt+I</td>
+<td style="text-align: center;">Cmd+Shift+K</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chunkを追加</td>
+<td style="text-align: center;">Ctrl+Alt+I</td>
+<td style="text-align: center;">Cmd+Shift+I</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">現在編集中のファイルを保存</td>
+<td style="text-align: center;">Ctrl+S</td>
+<td style="text-align: center;">Cmd+S</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">コピー</td>
+<td style="text-align: center;">Ctrl+C</td>
+<td style="text-align: center;">Cmd+C</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">カット</td>
+<td style="text-align: center;">Ctrl+X</td>
+<td style="text-align: center;">Cmd+X</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">貼り付け</td>
+<td style="text-align: center;">Ctrl+V</td>
+<td style="text-align: center;">Cmd+V</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">全体選択</td>
+<td style="text-align: center;">Ctrl+A</td>
+<td style="text-align: center;">Cmd+A</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">部分選択</td>
+<td style="text-align: center;">Shift+矢印</td>
+<td style="text-align: center;">Shift+矢印</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">検索&amp;置換</td>
+<td style="text-align: center;">Ctrl+F</td>
+<td style="text-align: center;">Cmd+F</td>
+</tr>
+</tbody>
+</table>
+
+<aside><div>
+<p>ただ、マウスを使わないからといって、必ずしもできる人だという意味ではない。宋もその一人だ。</p>
+</div></aside></section></section>
+<section>
+<section id="rの紹介" class="title-slide slide level1 center">
+<h1><strong>3</strong> Rの紹介</h1>
+
+</section>
+<section id="パッケージ" class="slide level2">
+<h2>パッケージ</h2>
+<p>分析に使用するパッケージはソースコードファイル（<code>.R</code>ファイル）の<span class="small">最上段に読み込みのコードを記入</span>する</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">libaray</span>(パッケージ1)</span>
+<span id="cb2-2"><a href=""></a><span class="fu">library</span>(パッケージ2)</span>
+<span id="cb2-3"><a href=""></a><span class="fu">library</span>(パッケージ3)</span>
+<span id="cb2-4"><a href=""></a></span>
+<span id="cb2-5"><a href=""></a>Rコードにゃー！にゃー！</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>{tidyverse}</code>は本講義の必須パッケージだから、とりあえず<code>library(tidyverse)</code>は書いておく</li>
+<li>使いたいパッケージがインストールされていない場合、コンソールで<code>install.packages("パッケージ名")</code>でインストールする
+<ul>
+<li>インストールは1回だけで良いが、パッケージをアップデートする際は再インストールする</li>
+</ul></li>
+</ul>
+</section>
+<section id="計算" class="slide level2">
+<h2>計算</h2>
+<p>Consoleペインで直接入力するか、Sourceペインに入力し、実行する。</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">3</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+</section>
+<section id="オブジェクトの作成" class="slide level2">
+<h2>オブジェクトの作成</h2>
+<p>代入演算子<sup>1</sup>（<code>&lt;-</code>）を使ってオブジェクトを作成</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>オブジェクト名 <span class="ot">&lt;-</span> オブジェクトの中身</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>作成されたオブジェクトはメモリ（作業空間）に格納される。
+<ul>
+<li>作業空間上のオブジェクトリストは<code>ls()</code>で確認可能</li>
+<li>オブジェクトの中身の出力は<code>オブジェクト名</code>か<code>print(オブジェクト名)</code></li>
+</ul></li>
+<li>代入演算子を使わない場合、作業空間には格納されない</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>four <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb6-2"><a href=""></a>four <span class="co"># print(four) でもOK</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<ul>
+<li>ベクトルは<code>c()</code>関数で作成し、要素<span class="small">（elements）</span>はカンマ（<code>,</code>）で区切る</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>「割り当て演算子」とも呼ばれる。</p></li></ol></aside></section>
+<section id="オブジェクト作成時の注意事項" class="slide level2">
+<h2>オブジェクト作成時の注意事項</h2>
+<ol type="1">
+<li>文字列は必ず<code>"</code>か<code>'</code>で囲む（<code>"</code>、<code>'</code>で囲まれていない文字列はオブジェクト名扱い）
+<ul>
+<li>例外）<code>NA</code>、<code>TRUE</code>、<code>FALSE</code>、<code>Inf</code>、<code>NULL</code>、<code>NaN</code>など</li>
+</ul></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>hello <span class="ot">&lt;-</span> hi</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: object 'hi' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>hello <span class="ot">&lt;-</span> <span class="st">"hi"</span></span>
+<span id="cb11-2"><a href=""></a>hello</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "hi"</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>新しいオブジェクトとして同じ名前を使うと古いオブジェクトは上書きされる</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>hello <span class="ot">&lt;-</span> <span class="st">'안녕하세요, 반갑습니다. 잘 부탁드립니다.'</span></span>
+<span id="cb13-2"><a href=""></a>hello</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "안녕하세요, 반갑습니다. 잘 부탁드립니다."</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>オブジェクト名は大文字と小文字を区別する</li>
+</ol>
+</section>
+<section id="コメントの作成" class="slide level2">
+<h2>コメントの作成</h2>
+<p><code>#</code>以降の文字は<span class="alert">コメント</span>扱いとなり、結果には影響を与えない</p>
+<ul>
+<li>メモ用として使える</li>
+<li>せっかく書いたのに不要になったコードを消さず、コメント化しておく（「コメントアウト」と呼ぶ）</li>
+<li>文字列内部（<code>"</code>で囲まれている）の<code>#</code>はコメントではなく、通常の文字列</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># これは結果に影響を与えない</span></span>
+<span id="cb15-2"><a href=""></a><span class="co"># コメントはメモとして使える。プログラミングが上手い人はこまめにコメントを入れる</span></span>
+<span id="cb15-3"><a href=""></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="dv">1</span> <span class="sc">*</span> <span class="dv">1</span> <span class="co"># ちょっと難しい計算もしてみる</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">print</span>(<span class="st">"# これはコメントではない"</span>)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "# これはコメントではない"</code></pre>
+</div>
+</div>
+</section>
+<section id="関数の使い方" class="slide level2">
+<h2>関数の使い方</h2>
+<p><span class="alert"><strong>関数</strong></span><span class="small">（function）</span>：入力に対し、決められた手続きで計算を行い、出力を返すもの</p>
+<ul>
+<li>関数名の後には必ず括弧が付く（例：<code>関数名()</code>）</li>
+<li>一部の例外を除き、関数は入力<span class="small">（input）</span>を必要とし、これを<span class="alert"><strong>引数</strong></span>と呼ぶ
+<ul>
+<li>入力が複数の場合、引数をカンマ（<code>,</code>）で区切る</li>
+</ul></li>
+<li>引数が複数の場合、決められた順番で各必要があるが、<span class="alert"><strong>引数名</strong></span>を別途指定すれば、順番を守らなくても良い
+<ul>
+<li>書き方は<code>引数名 = 引数</code></li>
+<li>引数名は<span class="alert">仮引数</span><span class="small">（parameter）</span>、引数は<span class="alert">実引数</span><span class="small">（argument）</span>とも呼ばれる</li>
+</ul></li>
+</ul>
+</section>
+<section id="関数の一般的な使い方1" class="slide level2">
+<h2>関数の一般的な使い方（1）</h2>
+<p>第1引数の仮引数は省略し、実引数のみ書く（何が第1引数かはコンソールで<code>?関数名</code>で確認）</p>
+<ul>
+<li>第2引数以降は<code>仮引数 = 実引数</code></li>
+<li>例）<code>sd()</code>は2つの引数があり、引数名はそれぞれ<code>x</code>、<code>na.rm</code></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">sd</span>(my_vector, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.577709</code></pre>
+</div>
+</div>
+<ul>
+<li>以下のように第1引数の仮引数を書いても良い（一般的な書きた方ではない）</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">sd</span>(<span class="at">x =</span> my_vector, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.577709</code></pre>
+</div>
+</div>
+</section>
+<section id="関数の一般的な使い方2" class="slide level2">
+<h2>関数の一般的な使い方（2）</h2>
+<ul>
+<li><code>mean()</code>の場合、<code>na.rm</code>の既定値が<code>FALSE</code>であるため、<code>na.rm = FALSE</code>を指定するなら、省略可能
+<ul>
+<li>既定値はコンソールで<code>?関数名</code>で確認</li>
+<li><code>mean()</code>は<code>x</code>、<code>trim</code>、<code>na.rm</code>の計3つの入力を受け付けるが、<code>trim</code>と<code>na.rm</code>には既定値がある（それぞれ<code>0</code>と<code>FALSE</code>）</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="co"># mean(my_vector, trim = 0, na.rm = TRUE) と同じ意味 </span></span>
+<span id="cb25-2"><a href=""></a><span class="fu">mean</span>(my_vector, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="co"># mean(my_vector, trim = 0, na.rm = FALSE) と同じ意味</span></span>
+<span id="cb27-2"><a href=""></a><span class="fu">mean</span>(my_vector)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.6</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="データの読み込み" class="title-slide slide level1 center">
+<h1><strong>4</strong> データの読み込み</h1>
+
+</section>
+<section id="データを読み込む" class="slide level2">
+<h2>データを読み込む</h2>
+<ul>
+<li><code>read_csv()</code>関数で<code>.csv</code>形式ファイルを読み込む。
+<ul>
+<li><code>read_csv()</code>は{readr}パッケージが提供する関数（{readr}は{tidyverse}の一部）</li>
+<li>中には読み込む<span class="alert"><strong>ファイルのパス</strong></span><sup>1</sup>を指定（<code>"</code>で囲む）</li>
+</ul></li>
+<li>これから使っていくため、代入演算子（<code>&lt;-</code>）を使用し、作業環境に格納する。
+<ul>
+<li>Environmentタブ、または<code>ls()</code>関数で作業環境内のオブジェクト一覧が確認できる。</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb29-2"><a href=""></a></span>
+<span id="cb29-3"><a href=""></a>star <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/STAR.csv"</span>)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>ファイルの位置とファイル名。たとえば、作業ディレクトリ（プロジェクトのディレクトリ）の<code>data</code>ディレクトリ内の<code>STAR.csv</code>という名前のファイルであれば、パスは<code>data/STAR.csv</code>となる。（ちなみに「ディレクトリ」は「フォルダー」の同義語）</p></li></ol></aside></section>
+<section id="data.frameとtibble" class="slide level2">
+<h2>data.frameとtibble</h2>
+<ul>
+<li>同じ<code>.csv</code>形式ファイルでも<code>read.csv()</code>で読み込んだらその表のデータ構造はデータフレーム（data.frame）であり、<code>read_csv()</code>で読み込んだらティブル（tibble）となる。
+<ul>
+<li>先ほど読み込んだファイルのデータ構造はティブル</li>
+<li>しかし、多くの場合、ティブルとデータフレームは区別せず、通常、「<strong>データフレーム</strong>」と呼んでいる。</li>
+<li><span class="alert"><strong>ティブルはデータフレームの完全な上位互換</strong>であるため、ティブルはデータフレームでもある</span>。しかし、逆は成立しない。</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">is.data.frame</span>(star) <span class="co"># starはtibble構造だが、data.frame構造でもある</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="データを眺める" class="slide level2">
+<h2>データを眺める</h2>
+<p><strong>方法1：</strong><code>print(オブジェクト名)</code>（<code>n</code>引数で出力行数が指定可能; 既定値は10）</p>
+<ul>
+<li>簡単に確認するためにはこれで十分</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">print</span>(star) <span class="co"># 5行だけ確認したい場合は print(star, n = 4)</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,274 × 4
+   classtype reading  math graduated
+   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+ 1 small         578   610         1
+ 2 regular       612   612         1
+ 3 regular       583   606         1
+ 4 small         661   648         1
+ 5 small         614   636         1
+ 6 regular       610   603         0
+ 7 small         595   610         1
+ 8 small         665   631         1
+ 9 regular       616   636         1
+10 regular       624   626         1
+# ℹ 1,264 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="データを眺める-1" class="slide level2">
+<h2>データを眺める</h2>
+<p><strong>方法2：</strong><code>view(オブジェクト名)</code></p>
+<ul>
+<li>ソースコードと同じPaneに新しいタブとしてデータの中身が表示される。</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="fu">view</span>(star)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="データを理解する" class="slide level2">
+<h2>データを理解する</h2>
+<h3 id="観察observations"><span class="alert"><strong>観察</strong></span><span class="small">（observations）</span></h3>
+<ul>
+<li>研究において特定の個人または団体から収集された情報</li>
+<li><strong>観察単位</strong>：各観察が表す個人または団体を定義するもの</li>
+<li>STARデータセットの観察単位は、生徒</li>
+<li><span class="math inline">\(i\)</span>で特定の観察を参照する</li>
+</ul>
+<h3 id="変数variables"><span class="alert"><strong>変数</strong></span><span class="small">（variables）</span></h3>
+<ul>
+<li>研究における複数の個人または団体で変化する特徴の値を捉えたもの</li>
+<li>変数 = データフレームの各<strong>列</strong>（<code>star</code>は4つの変数で構成されている）</li>
+<li>変数名 = データフレームの各列のラベル（classtype、reading、math、graduated）</li>
+</ul>
+</section>
+<section id="変数の例" class="slide level2">
+<h2>変数の例</h2>
+<p><span class="math display">\[
+X = \{10, 5, 8\}
+\]</span></p>
+<ul>
+<li>「=」の左は変数名（X）、「{}」内に変数の内容（contents）が入る（10, 5, 8）</li>
+<li><span class="math inline">\(X\)</span>は3つの観察値を含む（10と5、8）</li>
+<li><span class="math inline">\(X_i\)</span>は観察<span class="math inline">\(i\)</span>における<span class="math inline">\(X\)</span>の値。<span class="math inline">\(i = 3\)</span>の<span class="math inline">\(X\)</span>は<span class="math inline">\(X_3 = 8\)</span></li>
+</ul>
+<table class="caption-top">
+<caption>STARデータセットの説明</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 89%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">変数名</th>
+<th style="text-align: left;">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>classtype</code></td>
+<td style="text-align: left;">生徒が通った学級の規模（<code>"small"</code>は小規模、<code>"regular"</code>は標準規模）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>reading</code></td>
+<td style="text-align: left;">生徒の小学3年次の読解力テストの点数（単位：点）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>math</code></td>
+<td style="text-align: left;">生徒の小学3年次の数学テストの点数（単位：点）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>graduated</code></td>
+<td style="text-align: left;">高校を卒業したかどうか（<code>1</code> = 卒業した / <code>0</code> = 卒業しなかった）</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="変数の種類" class="slide level2">
+<h2>変数の種類</h2>
+<ul>
+<li>文字型変数（character variables）：<code>classtype</code>列</li>
+<li>数値型変数（numeric variables）
+<ul>
+<li>二値変数（binary variable）：<code>graduated</code>列</li>
+<li>非二値変数（non-binary variable）：<code>reading</code>、<code>math</code>列</li>
+</ul></li>
+</ul>
+
+<img data-src="DSS_intro_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2400"></section>
+<section id="観察数number-of-observations" class="slide level2">
+<h2>観察数（number of observations）</h2>
+<p>データセット内の観察の数であり、データフレームの行数と一致する</p>
+<ul>
+<li>手元のデータセットは母集団（population）でなく、標本（sample）である場合が多いため、<span class="alert"><strong>サンプルサイズ</strong></span>とも呼ばれる</li>
+<li><code>star</code>の観察数は1,274であり、<span class="math inline">\(n\)</span>=1,274と表記する
+<ul>
+<li><code>dim()</code>関数、または<code>nrow()</code>関数で確認</li>
+</ul></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="co"># 観察（行）の数と変数（列）の数</span></span>
+<span id="cb35-2"><a href=""></a><span class="fu">dim</span>(star)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1274    4</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:1%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="co"># 観察数のみ</span></span>
+<span id="cb37-2"><a href=""></a><span class="fu">nrow</span>(star)</span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1274</code></pre>
+</div>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="平均値の計算" class="title-slide slide level1 center">
+<h1><strong>5</strong> 平均値の計算</h1>
+
+</section>
+<section id="変数へのアクセス" class="slide level2">
+<h2>変数へのアクセス</h2>
+<ul>
+<li>データフレームの特定の列の抽出：<code>データフレーム名$列名</code></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>star<span class="sc">$</span>reading <span class="co"># starのreading列を抽出し、出力する</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   [1] 578 612 583 661 614 610 595 665 616 624 593 599 693 545 565 654 686 570
+  [19] 529 582 608 572 562 641 644 565 650 552 636 567 554 595 620 639 633 614
+  [37] 606 578 536 629 675 604 577 713 693 595 593 599 616 620 592 702 636 654
+  [55] 675 665 573 641 533 616 670 654 686 693 614 606 614 616 616 661 626 713
+  [73] 636 675 629 680 629 631 650 654 618 604 657 675 665 657 569 650 600 675
+  [91] 665 665 602 618 608 647 606 592 639 641 657 633 650 713 614 588 713 647
+ [109] 657 585 654 552 661 650 686 702 713 549 597 590 647 728 629 680 657 665
+ [127] 665 608 583 629 670 665 665 629 614 608 675 644 650 654 654 595 647 543
+ [145] 713 624 670 680 572 641 654 582 597 633 624 728 675 578 639 680 595 670
+ [163] 569 602 661 650 661 650 633 590 661 686 580 620 670 614 580 606 614 622
+ [181] 639 633 583 657 728 657 636 606 680 650 590 549 600 580 654 702 670 608
+ [199] 680 636 641 608 580 686 622 633 610 593 670 614 599 633 686 702 588 622
+ [217] 693 631 680 657 629 599 665 595 633 661 622 614 680 626 602 557 650 608
+ [235] 631 629 657 602 595 612 702 644 608 636 675 633 587 624 597 650 595 670
+ [253] 686 670 595 572 626 631 675 675 636 600 657 588 641 629 612 661 654 602
+ [271] 595 620 639 644 612 665 728 629 728 554 650 629 693 654 567 602 657 650
+ [289] 557 647 629 569 650 624 641 620 578 644 606 661 602 614 602 626 587 604
+ [307] 629 693 600 629 622 631 593 693 633 647 629 631 629 670 570 616 657 593
+ [325] 657 713 602 728 631 633 644 582 661 606 582 608 620 675 597 622 618 644
+ [343] 599 620 629 578 702 686 639 654 626 557 702 670 590 529 587 560 650 604
+ [361] 585 629 647 626 636 686 657 588 665 670 686 661 675 657 587 588 654 686
+ [379] 654 654 608 583 702 626 608 665 593 608 644 639 585 573 657 641 631 631
+ [397] 554 650 582 636 657 647 686 753 650 633 582 595 629 549 614 595 614 600
+ [415] 602 639 650 633 597 657 608 604 654 622 647 602 686 644 580 626 587 654
+ [433] 647 661 647 680 602 570 693 670 650 610 612 620 650 665 728 631 661 650
+ [451] 633 654 665 661 680 631 597 562 670 564 614 590 573 593 573 650 622 608
+ [469] 580 661 557 654 620 633 629 608 622 636 633 654 641 654 545 626 680 661
+ [487] 608 675 633 675 606 629 610 657 604 631 577 644 567 636 618 624 597 600
+ [505] 624 693 606 675 647 616 578 616 604 595 577 583 693 593 654 631 641 600
+ [523] 578 618 753 636 555 614 577 606 585 588 636 622 582 650 641 618 606 665
+ [541] 592 559 610 624 585 670 626 610 631 583 670 614 614 626 618 680 616 661
+ [559] 693 559 618 588 593 654 590 647 675 693 624 670 620 608 650 670 573 693
+ [577] 602 665 629 680 612 606 665 573 612 600 622 583 620 636 675 570 629 641
+ [595] 657 641 590 616 641 641 616 665 675 620 650 592 577 702 590 616 631 616
+ [613] 657 633 728 641 592 585 622 606 631 636 608 665 592 585 618 587 633 564
+ [631] 647 657 636 665 702 713 631 639 641 633 616 590 593 644 612 590 629 608
+ [649] 670 620 624 665 582 633 657 654 675 616 641 614 641 665 641 702 624 624
+ [667] 686 665 665 633 641 680 629 639 629 610 583 636 670 624 622 650 650 629
+ [685] 670 610 624 702 670 641 622 675 693 693 588 602 654 593 657 554 564 639
+ [703] 573 654 608 650 713 620 657 636 650 583 629 639 600 629 665 588 612 636
+ [721] 614 654 629 616 633 661 552 582 639 600 670 644 675 622 616 650 592 641
+ [739] 702 590 675 612 622 629 587 578 686 587 597 592 582 644 599 661 639 713
+ [757] 616 575 612 641 620 624 602 595 626 661 608 610 560 582 680 665 636 675
+ [775] 614 654 665 597 647 661 616 595 631 595 592 592 575 686 593 644 582 639
+ [793] 650 620 622 661 606 675 604 629 675 622 686 624 564 680 612 636 636 624
+ [811] 624 686 670 612 626 616 590 670 608 641 657 631 572 644 610 610 597 650
+ [829] 559 595 610 618 629 665 529 624 641 622 599 657 593 629 665 644 693 636
+ [847] 647 644 641 657 693 633 618 693 670 686 633 650 599 622 590 641 616 535
+ [865] 622 618 713 647 644 693 614 639 661 654 654 612 612 641 713 622 654 665
+ [883] 670 693 631 606 624 661 647 612 647 661 592 636 647 661 552 680 593 693
+ [901] 610 633 686 647 647 587 587 559 562 616 618 582 641 624 626 604 657 622
+ [919] 592 641 606 629 647 631 567 686 670 641 661 604 661 629 633 728 636 604
+ [937] 602 629 661 600 604 616 641 657 661 616 665 631 629 647 650 620 624 614
+ [955] 595 629 650 647 636 624 618 587 639 680 644 641 629 650 633 641 622 631
+ [973] 702 693 595 626 631 665 587 590 661 644 686 606 590 538 629 588 644 636
+ [991] 686 680 606 639 620 657 608 647 559 616 693 702 639 527 622 644 572 636
+[1009] 614 647 629 661 602 629 585 564 587 702 665 606 592 602 650 616 636 602
+[1027] 641 629 654 583 604 587 585 622 606 644 633 559 616 604 650 629 600 602
+[1045] 573 593 675 624 675 644 585 633 641 565 557 585 608 675 641 636 641 641
+[1063] 610 578 654 582 650 593 654 593 616 661 654 599 614 599 610 593 647 602
+[1081] 657 604 626 639 578 644 588 665 680 610 606 600 602 588 639 647 636 654
+[1099] 647 680 604 585 612 622 599 599 595 606 644 616 647 639 597 654 639 650
+[1117] 650 636 670 604 636 577 665 680 620 570 578 633 614 686 639 650 639 631
+[1135] 592 680 675 616 633 624 626 650 675 612 644 595 588 654 661 593 620 629
+[1153] 570 577 620 575 600 680 600 588 593 610 626 633 597 614 578 595 612 644
+[1171] 647 650 578 654 606 604 602 582 606 633 650 606 629 604 670 588 644 624
+[1189] 633 650 753 633 552 647 610 608 654 633 565 693 618 606 702 602 622 606
+[1207] 622 608 639 626 647 636 614 713 585 578 626 650 590 569 661 661 670 614
+[1225] 610 629 602 631 675 557 680 631 597 670 650 612 670 686 592 641 631 602
+[1243] 593 624 633 686 595 713 602 639 629 633 647 587 616 580 608 595 592 542
+[1261] 647 665 604 636 657 590 641 641 657 650 636 629 641 575</code></pre>
+</div>
+</div>
+</section>
+<section id="算術平均値" class="slide level2">
+<h2>（算術）平均値</h2>
+<p><code>mean(平均値を計算する数値列)</code></p>
+<ul>
+<li><code>mean(x = 平均値を計算する数値列)</code>でも良いが、第1引数の仮引数は省略することが多いため、<code>x =</code>は書かなくても良い</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">mean</span>(star<span class="sc">$</span>reading) <span class="co"># starのreading列の平均値</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 628.803</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a><span class="fu">mean</span>(star<span class="sc">$</span>math) <span class="co"># starのmath列の平均値</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 631.5879</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">mean</span>(star<span class="sc">$</span>graduated) <span class="co"># starのgraduated列の平均値</span></span></code><button title="コピー" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8697017</code></pre>
+</div>
+</div>
+
+<aside><div>
+<ul>
+<li>参考）平均値にはよく使う算術平均以外にも、加重平均、幾何平均、調和平均などがある。</li>
+</ul>
+</div></aside></section>
+<section id="平均値の意味" class="slide level2">
+<h2>平均値の意味</h2>
+<ol type="1">
+<li>非二値変数の場合
+<ul>
+<li>当該変数と<span class="alert"><strong>同じ測定単位での平均値</strong></span></li>
+<li>当該変数を代表する値</li>
+</ul></li>
+<li>二値変数の場合
+<ul>
+<li>結果を100倍し、%を付けると<span class="alert"><strong>比率</strong></span>になる</li>
+<li>データ分析の世界では100倍せず、そのまま使うことが多い</li>
+</ul></li>
+</ol>
+</section></section>
+<section>
+<section id="今後の実習について" class="title-slide slide level1 center">
+<h1><strong>6</strong> 今後の実習について</h1>
+
+</section>
+<section id="今後の予定" class="slide level2">
+<h2>今後の予定</h2>
+<ul>
+<li><span class="alert"><strong>反転授業</strong></span>：授業日までにしっかり予習（教科書を読み、コードを打ち込み、結果を確認する）
+<ul>
+<li>ゼミ当日は予習の成果（コード）などを適宜宋が確認する。
+<ul>
+<li><span class="math inline">\(\Rightarrow\)</span> 場合によっては、課題形式で毎週提出を求める可能性もある</li>
+</ul></li>
+<li>予習した内容、コードで質問および疑問があったらゼミ中に解決する
+<ul>
+<li><span class="math inline">\(\Rightarrow\)</span> ゼミ時間は教科書の<span class="alert"><strong>フィードバック時間</strong></span></li>
+</ul></li>
+</ul></li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">回</th>
+<th style="text-align: center;">日</th>
+<th style="text-align: left;">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">第08回</td>
+<td style="text-align: center;">2025/06/03</td>
+<td style="text-align: left;">第2章</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">第09回</td>
+<td style="text-align: center;">2025/06/10</td>
+<td style="text-align: left;">第3章</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">第10回</td>
+<td style="text-align: center;">2025/06/17</td>
+<td style="text-align: left;">第4章</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">第11回</td>
+<td style="text-align: center;">2025/06/24</td>
+<td style="text-align: left;">第5章</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">第12回</td>
+<td style="text-align: center;">2025/07/01</td>
+<td style="text-align: left;">第6章</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">第13回</td>
+<td style="text-align: center;">2025/07/08</td>
+<td style="text-align: left;">第7章</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><del>第14回</del></td>
+<td style="text-align: center;"><del>2025/07/15</del></td>
+<td style="text-align: left;">休講</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">第15回</td>
+<td style="text-align: center;">2025/07/22</td>
+<td style="text-align: left;">第8章</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="本書が読み終わったら" class="slide level2">
+<h2>本書が読み終わったら…</h2>
+<p>次のステップとして以下の本がおすすめ</p>
+<ul>
+<li>今井耕介（著） 粕谷祐子・原田勝孝・久保浩樹（訳）. 2018.『社会科学のためのデータ分析入門（<a href="https://amzn.asia/d/32kkb74" target="_blank">上</a>/<a href="https://amzn.asia/d/2MIbOMd" target="_blank">下</a>） 』岩波書店</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="figs/imai_1.jpg"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="figs/imai_2.jpg"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="figs/imai_3.jpg"></p>
+</div>
+</div>
+</div>
+
+
+<aside><div>
+<p>ただし、日本語訳されたものは2017年版をベースとしているため、コードの書き方が古い。できれば、全く同じ内容で、かつ最新の書き方になっている以下の本がおすすめだ。英語の勉強にもなる。</p>
+<ul>
+<li>Imai, Kosuke and Nora Webb Williams. 2022. <a href="https://amzn.asia/d/eYAG6z7" target="_blank"><em>Quantitative Social Science: An Introduction in Tidyverse</em></a>. Princeton University Press</li>
+</ul>
+</div></aside></section></section>
+
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>第1章「イントロダクション」</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="DSS_intro_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="DSS_intro_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="DSS_intro_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="DSS_intro_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "コピーしました");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "コピーしました");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
