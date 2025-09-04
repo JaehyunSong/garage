@@ -52,6 +52,7 @@
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>重要な通知（場所変更、応募者への課題関連など）のため、<strong class="text-gray-800">普段お使いのメールアドレス</strong>をご登録ください。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">数字はすべて半角</strong>でご入力ください。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>友人と参加をご希望の場合も、<strong class="text-gray-800">各自でご予約</strong>をお願いします。</div></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">開始1時間前まで予約可能</strong>です。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>お問い合わせ: <a href="mailto:song@kansai-u.ac.jp" class="text-blue-500 hover:underline">song@kansai-u.ac.jp</a></div></li>
                 </ul>
             </div>
@@ -199,7 +200,7 @@
             apiKey: "AIzaSyBRyXKDLL5XVOI4LK9ZYIBQrqN_YLaGwdY",
             authDomain: "song-zemi.firebaseapp.com",
             projectId: "song-zemi",
-            storageBucket: "song-zemi.firebasestorage.app",
+            storageBucket: "song-zemi.appspot.com",
             messagingSenderId: "601587502243",
             appId: "1:601587502243:web:209753e356a98fcc34316"
         };
@@ -349,13 +350,41 @@
                 const remaining = event.capacity - eventReservations.length;
                 const isFull = remaining <= 0;
                 
+                const now = new Date();
+                const eventStartTime = new Date(event.startTime);
+                const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000)); // 開始1時間前
+                const isPastDeadline = now > bookingDeadline;
+                
                 let statusBadge;
                 if (isFull) {
                     statusBadge = `<span class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">満員</span>`;
+                } else if (isPastDeadline) {
+                    statusBadge = `<span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">受付終了</span>`;
                 } else if (remaining / event.capacity <= 0.3) {
                     statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">残りわずか</span>`;
                 } else {
                     statusBadge = `<span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">空きあり</span>`;
+                }
+
+                let actionAreaHTML;
+                if (isPastDeadline) {
+                    actionAreaHTML = `
+                        <div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">
+                            予約不可
+                        </div>
+                    `;
+                } else if (isFull) {
+                    actionAreaHTML = `
+                        <button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>
+                            満員
+                        </button>
+                    `;
+                } else {
+                    actionAreaHTML = `
+                        <button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow">
+                            予約する
+                        </button>
+                    `;
                 }
                 
                 const eventCard = document.createElement('div');
@@ -371,9 +400,7 @@
                         ${event.description ? `<p class="mt-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-md">${event.description.replace(/\n/g, '<br>')}</p>` : ''}
                     </div>
                     <div class="flex flex-col gap-2 w-full md:w-auto">
-                        <button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow disabled:bg-gray-400 disabled:cursor-not-allowed" ${isFull ? 'disabled' : ''}>
-                            ${isFull ? '満員' : '予約する'}
-                        </button>
+                        ${actionAreaHTML}
                         <button data-event-id="${event.id}" class="view-reservations-button-user bg-gray-500 text-white font-bold py-2 px-8 rounded-md hover:bg-gray-600 transition shadow">
                            <i class="fas fa-users mr-2"></i> 予約者リスト
                         </button>
@@ -458,11 +485,10 @@
                                                 <p class="text-sm text-gray-600">${r.studentId}</p>
                                                 <p class="text-sm text-gray-600">${r.email} / ${r.phoneNumber}</p>
                                             </div>
-                                            ${!isPast ? `
                                             <div>
                                                 <button data-reservation-id="${r.id}" data-reservation-info="${escape(JSON.stringify(r))}" class="edit-reservation-button bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-600 transition mr-1"><i class="fas fa-edit"></i></button>
                                                 <button data-reservation-id="${r.id}" class="delete-reservation-button bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-md hover:bg-red-600 transition"><i class="fas fa-trash-alt"></i></button>
-                                            </div>` : ''}
+                                            </div>
                                         </li>
                                     `).join('')}
                                 </ul>
@@ -592,6 +618,15 @@
         }
 
         function showReservationModal(eventId, eventInfo) {
+            const now = new Date();
+            const eventStartTime = new Date(eventInfo.startTime);
+            const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+            
+            if (now > bookingDeadline) {
+                showAlert('この説明会の予約受付は終了しました。参加をご希望の場合は、別途お問い合わせください。', true);
+                return; 
+            }
+
             modalContent.innerHTML = `
                 <div class="p-6 relative">
                     <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
@@ -831,7 +866,8 @@
             const studentIdSuffix = document.getElementById('student-id-suffix').value.trim();
             const email = document.getElementById('email').value.trim();
             const phoneNumber = document.getElementById('phone-number').value.trim();
-
+            const eventId = document.getElementById('event-id').value;
+            
             const studentId = `情${studentIdPrefix}-${studentIdSuffix}`;
 
             // Validation
@@ -855,8 +891,22 @@
                 return;
             }
 
+            const event = allEventsCache.find(e => e.id === eventId);
+            if (!event) {
+                showAlert('選択された説明会が見つかりません。ページを更新してください。', true);
+                return;
+            }
+            const now = new Date();
+            const eventStartTime = new Date(event.startTime);
+            const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+            if (now > bookingDeadline) {
+                showAlert('この説明会の予約受付は終了しました。', true);
+                closeModal();
+                return;
+            }
+
             const reservationData = {
-                eventId: document.getElementById('event-id').value,
+                eventId: eventId,
                 name: name,
                 nameKana: nameKana,
                 studentId: studentId,
@@ -876,8 +926,8 @@
                 if (!phoneSnapshot.empty) {
                     for(const resDoc of phoneSnapshot.docs) {
                         const resData = resDoc.data();
-                        const event = allEventsCache.find(e => e.id === resData.eventId);
-                        if (event && new Date(event.endTime) >= new Date()) {
+                        const reservedEvent = allEventsCache.find(e => e.id === resData.eventId);
+                        if (reservedEvent && new Date(reservedEvent.endTime) >= new Date()) {
                             hasActiveReservation = true;
                             break;
                         }
@@ -894,13 +944,8 @@
                 const capacitySnapshot = await getDocs(qCapacity);
                 const currentReservations = capacitySnapshot.size;
                 
-                const eventsRef = collection(db, 'events');
-                const eventDocRef = doc(db, 'events', reservationData.eventId);
-                const eventDocSnap = await getDocs(query(eventsRef, where("__name__", "==", reservationData.eventId)));
-                let capacity = 0;
-                 if (!eventDocSnap.empty) {
-                   capacity = eventDocSnap.docs[0].data().capacity;
-                }
+                const eventForCapacityCheck = allEventsCache.find(e => e.id === reservationData.eventId);
+                const capacity = eventForCapacityCheck ? eventForCapacityCheck.capacity : 0;
                 
                 if (currentReservations >= capacity) {
                     showAlert('申し訳ありません、この説明会は満員になりました。', true);
@@ -1078,7 +1123,7 @@
 
         // 文字列をSHA-256ハッシュ化する非同期関数
         async function sha256(message) {
-          const msgBuffer = new TextEncoder().encode(message);                    
+          const msgBuffer = new TextEncoder().encode(message);                     
           const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
           const hashArray = Array.from(new Uint8Array(hashBuffer));
           const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
