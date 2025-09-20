@@ -13,10 +13,6 @@
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
         }
-        .tab-button.active {
-            border-bottom-color: #3b82f6; /* blue-500 */
-            color: #3b82f6;
-        }
         .modal-backdrop {
             background-color: rgba(0, 0, 0, 0.5);
         }
@@ -26,19 +22,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1.0); }
-        }
-        /* Date input format */
-        input[type="date"]::-webkit-datetime-edit-year-field,
-        input[type="date"]::-webkit-datetime-edit-month-field,
-        input[type="date"]::-webkit-datetime-edit-day-field {
-            -webkit-appearance: none;
-            background-color: transparent;
-            padding: 0;
-            margin: 0;
-        }
-        .clickable-row:hover {
-            background-color: #f3f4f6; /* gray-100 */
-            cursor: pointer;
         }
     </style>
 </head>
@@ -61,18 +44,6 @@
                 </ul>
             </div>
         </header>
-
-        <!-- タブ切り替え -->
-        <div class="mb-6 border-b border-gray-200">
-            <nav class="flex space-x-4" aria-label="Tabs">
-                <button id="user-tab" class="tab-button active py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-blue-500 hover:border-blue-500 transition">
-                    <i class="fas fa-user-graduate mr-2"></i>予約・キャンセル
-                </button>
-                <button id="admin-tab" class="tab-button py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-blue-500 hover:border-blue-500 transition">
-                    <i class="fas fa-user-shield mr-2"></i>管理者用
-                </button>
-            </nav>
-        </div>
 
         <!-- 予約者向けビュー -->
         <main id="user-view">
@@ -114,63 +85,6 @@
                 </div>
             </section>
         </main>
-
-        <!-- 管理者向けビュー -->
-        <main id="admin-view" class="hidden">
-            <section class="mb-12">
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-green-500 pl-3">新しい説明会を登録</h2>
-                <form id="add-event-form" class="bg-white p-6 rounded-lg shadow-md space-y-4">
-                    <div>
-                        <label for="event-date" class="block mb-2 font-medium text-gray-700">開催日</label>
-                        <input type="date" id="event-date" class="w-full p-2 border border-gray-300 rounded-md" required>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="event-start-time" class="block mb-2 font-medium text-gray-700">開始時間</label>
-                            <input type="time" id="event-start-time" class="w-full p-2 border border-gray-300 rounded-md" required>
-                        </div>
-                        <div>
-                            <label for="event-end-time" class="block mb-2 font-medium text-gray-700">終了時間</label>
-                            <input type="time" id="event-end-time" class="w-full p-2 border border-gray-300 rounded-md" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="event-capacity" class="block mb-2 font-medium text-gray-700">定員</label>
-                        <input type="number" id="event-capacity" min="1" class="w-full p-2 border border-gray-300 rounded-md" value="10", required>
-                    </div>
-                    <div>
-                        <label for="event-location" class="block mb-2 font-medium text-gray-700">場所</label>
-                        <input type="text" id="event-location" class="w-full p-2 border border-gray-300 rounded-md" required placeholder="例: オンライン、TK108、TA227" value="個人研究室（TA227）">
-                    </div>
-                    <div>
-                        <label for="event-description" class="block mb-2 font-medium text-gray-700">説明</label>
-                        <textarea id="event-description" rows="3" class="w-full p-2 border border-gray-300 rounded-md" placeholder="服装、持ち物などの補足事項を記入"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-md hover:bg-green-600 transition shadow">
-                        <i class="fas fa-plus-circle mr-2"></i>説明会を登録する
-                    </button>
-                </form>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-blue-600 pl-3">開催予定の説明会</h2>
-                <div id="admin-upcoming-events-list" class="space-y-6">
-                </div>
-            </section>
-            
-            <section class="mt-12">
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-gray-600 pl-3">終了した説明会</h2>
-                <div id="admin-past-events-list" class="space-y-6">
-                </div>
-            </section>
-
-            <section class="mt-12">
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-purple-500 pl-3">全予約者リスト</h2>
-                <div id="admin-all-reservations-list" class="bg-white p-6 rounded-lg shadow-md">
-                    <!-- 全予約者リストがここに表示されます -->
-                </div>
-            </section>
-        </main>
     </div>
 
     <!-- モーダル -->
@@ -203,10 +117,7 @@
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- グローバル変数とFirebaseの初期化 ---
-        const ADMIN_PASSWORD_HASH = '5c5d6c83e3d740578fc6d55f439399a3dee46601fef71a886dd27a6812673bb9';
-
-        // ユーザーから提供されたFirebase設定情報
+        // --- Firebaseの初期化 ---
         const firebaseConfig = {
             apiKey: "AIzaSyBRyXKDLL5XVOI4LK9ZYIBQrqN_YLaGwdY",
             authDomain: "song-zemi.firebaseapp.com",
@@ -217,10 +128,9 @@
         };
         
         let db, auth;
-        let unsubscribeEvents, unsubscribeReservations; // リスナーを管理
-        let allEventsCache = []; // 説明会データのキャッシュ
+        let unsubscribeEvents, unsubscribeReservations;
+        let allEventsCache = [];
 
-        // アプリケーションの初期化関数
         async function initialize() {
             if (!firebaseConfig || !firebaseConfig.apiKey) {
                 console.error("Firebaseの構成情報が見つかりません。");
@@ -231,13 +141,11 @@
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-                setLogLevel('error'); // 本番用は 'error' に設定
+                setLogLevel('error');
 
                 onAuthStateChanged(auth, user => {
                     if (user) {
                         subscribeToData();
-                    } else {
-                        console.log("User is signed out.");
                     }
                 });
                 
@@ -245,31 +153,19 @@
 
             } catch(e) {
                 console.error("Firebaseの初期化に失敗しました: ", e);
-                 showAlert("データベースに接続できませんでした。Firebaseの設定情報を確認してください。", true);
+                 showAlert("データベースに接続できませんでした。", true);
             }
         }
 
         // --- DOM要素の取得 ---
-        const userTab = document.getElementById('user-tab');
-        const adminTab = document.getElementById('admin-tab');
-        const userView = document.getElementById('user-view');
-        const adminView = document.getElementById('admin-view');
-        const addEventForm = document.getElementById('add-event-form');
         const eventsListContainer = document.getElementById('events-list');
         const pastEventsListContainer = document.getElementById('past-events-list');
-        const adminUpcomingEventsList = document.getElementById('admin-upcoming-events-list');
-        const adminPastEventsList = document.getElementById('admin-past-events-list');
-        const adminAllReservationsList = document.getElementById('admin-all-reservations-list');
         const modalContainer = document.getElementById('modal-container');
         const modalContent = document.getElementById('modal-content');
         const searchReservationButton = document.getElementById('search-reservation-button');
         const cancelPhoneNumberInput = document.getElementById('cancel-phone-number');
 
-
         // --- イベントリスナー ---
-        userTab.addEventListener('click', () => switchView('user'));
-        adminTab.addEventListener('click', showAdminPasswordModal);
-        addEventForm.addEventListener('submit', handleAddEvent);
         searchReservationButton.addEventListener('click', handleSearchReservation);
         modalContainer.addEventListener('click', (e) => {
             if (e.target === modalContainer) closeModal();
@@ -281,13 +177,6 @@
         });
 
         // --- ビュー関連の関数 ---
-        function switchView(viewName) {
-            userView.classList.toggle('hidden', viewName !== 'user');
-            adminView.classList.toggle('hidden', viewName !== 'admin');
-            userTab.classList.toggle('active', viewName === 'user');
-            adminTab.classList.toggle('active', viewName === 'admin');
-        }
-
         function showAlert(message, isError = false) {
             const title = isError ? 'エラー' : '通知';
             const icon = isError ? 'fa-times-circle text-red-500' : 'fa-check-circle text-green-500';
@@ -312,31 +201,21 @@
 
             const eventsRef = collection(db, 'events');
             const reservationsRef = collection(db, 'reservations');
-
-            const qEvents = query(eventsRef); 
-
+            
             let allReservations = [];
             
-            unsubscribeEvents = onSnapshot(qEvents, (querySnapshot) => {
-                allEventsCache = [];
-                querySnapshot.forEach((doc) => {
-                    allEventsCache.push({ id: doc.id, ...doc.data() });
-                });
+            unsubscribeEvents = onSnapshot(query(eventsRef), (querySnapshot) => {
+                allEventsCache = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderAll(allEventsCache, allReservations);
             }, (error) => {
                 console.error("説明会データの取得に失敗: ", error);
-                showAlert("説明会データの読み込みに失敗しました。", true);
             });
             
             unsubscribeReservations = onSnapshot(reservationsRef, (querySnapshot) => {
-                allReservations = [];
-                querySnapshot.forEach((doc) => {
-                    allReservations.push({ id: doc.id, ...doc.data() });
-                });
+                allReservations = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderAll(allEventsCache, allReservations);
             }, (error) => {
                 console.error("予約データの取得に失敗: ", error);
-                showAlert("予約データの読み込みに失敗しました。", true);
             });
         }
         
@@ -347,8 +226,6 @@
 
             renderUserEventsList(upcomingEvents, reservations);
             renderPastEventsList(pastEvents);
-            renderAdminEventsList(upcomingEvents, pastEvents, reservations);
-            renderAllReservationsList(events, reservations);
         }
 
         function renderUserEventsList(events, reservations) {
@@ -381,23 +258,11 @@
 
                 let actionAreaHTML;
                 if (isPastDeadline) {
-                    actionAreaHTML = `
-                        <div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">
-                            宋に別途問い合わせてください
-                        </div>
-                    `;
+                    actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">受付終了</div>`;
                 } else if (isFull) {
-                    actionAreaHTML = `
-                        <button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>
-                            満員
-                        </button>
-                    `;
+                    actionAreaHTML = `<button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>満員</button>`;
                 } else {
-                    actionAreaHTML = `
-                        <button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow">
-                            予約する
-                        </button>
-                    `;
+                    actionAreaHTML = `<button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow">予約する</button>`;
                 }
                 
                 const eventCard = document.createElement('div');
@@ -414,9 +279,6 @@
                     </div>
                     <div class="flex flex-col gap-2 w-full md:w-auto">
                         ${actionAreaHTML}
-                        <button data-event-id="${event.id}" class="view-reservations-button-user bg-gray-500 text-white font-bold py-2 px-8 rounded-md hover:bg-gray-600 transition shadow">
-                           <i class="fas fa-users mr-2"></i> 予約者リスト
-                        </button>
                     </div>
                 `;
                 eventsListContainer.appendChild(eventCard);
@@ -424,13 +286,6 @@
 
             document.querySelectorAll('.reserve-button').forEach(button => {
                 button.addEventListener('click', (e) => showReservationModal(e.currentTarget.dataset.eventId, JSON.parse(unescape(e.currentTarget.dataset.eventInfo))));
-            });
-
-            document.querySelectorAll('.view-reservations-button-user').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventReservations = reservations.filter(r => r.eventId === e.currentTarget.dataset.eventId);
-                    showReservationListModal(eventReservations);
-                });
             });
         }
         
@@ -450,260 +305,28 @@
                         <p class="text-gray-500"><i class="fas fa-map-marker-alt w-5 text-center mr-1"></i> ${event.location}</p>
                     </div>
                      <div class="flex flex-col gap-2 w-full md:w-auto">
-                        <button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>
-                            終了しました
-                        </button>
+                        <button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>終了しました</button>
                     </div>
                 `;
                 pastEventsListContainer.appendChild(eventCard);
             });
         }
         
-        function renderAdminEventsList(upcomingEvents, pastEvents, reservations) {
-            const renderListToContainer = (container, eventList, isPast = false) => {
-                if (eventList.length === 0) {
-                    container.innerHTML = `<div class="text-center p-8 bg-white rounded-lg shadow"><p class="text-gray-500">該当する説明会はありません。</p></div>`;
-                    return;
-                }
-                container.innerHTML = '';
-                eventList.forEach(event => {
-                    const eventReservations = reservations.filter(r => r.eventId === event.id);
-                    const eventAccordion = document.createElement('div');
-                    eventAccordion.className = `bg-white rounded-lg shadow-md overflow-hidden ${isPast ? 'opacity-70' : ''}`;
-                    eventAccordion.innerHTML = `
-                        <div class="p-4 cursor-pointer flex justify-between items-center bg-gray-50 border-b accordion-header">
-                            <div>
-                                <p class="font-bold text-lg">${formatDateTimeRange(event.startTime, event.endTime)}</p>
-                                <p class="text-sm text-gray-600">${event.location}</p>
-                            </div>
-                            <div class="text-right">
-                                 <p class="font-semibold">${eventReservations.length} / ${event.capacity} 名</p>
-                                 <span class="text-sm text-gray-500"><i class="fas fa-chevron-down accordion-icon transition-transform"></i> 予約者一覧を見る</span>
-                            </div>
-                        </div>
-                        <div class="accordion-content hidden p-4">
-                            ${eventReservations.length > 0 ? `
-                                <ul class="space-y-2">
-                                    ${eventReservations.map(r => `
-                                        <li class="p-3 bg-gray-100 rounded-md flex justify-between items-center">
-                                            <div>
-                                                <p class="font-semibold">${r.name} (${r.nameKana})</p>
-                                                <p class="text-sm text-gray-600">${r.studentId}</p>
-                                                <p class="text-sm text-gray-600">${r.email} / ${r.phoneNumber}</p>
-                                            </div>
-                                            <div>
-                                                <button data-reservation-id="${r.id}" data-reservation-info="${escape(JSON.stringify(r))}" class="edit-reservation-button bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-600 transition mr-1"><i class="fas fa-edit"></i></button>
-                                                <button data-reservation-id="${r.id}" class="delete-reservation-button bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-md hover:bg-red-600 transition"><i class="fas fa-trash-alt"></i></button>
-                                            </div>
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            ` : '<p class="text-gray-500">この説明会にはまだ予約がありません。</p>'}
-                            <div class="mt-4 flex flex-wrap gap-2">
-                                <button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="edit-event-button bg-yellow-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-yellow-600 transition">
-                                    <i class="fas fa-edit mr-1"></i> 修正
-                                </button>
-                                <button data-event-id="${event.id}" class="delete-event-button bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-red-600 transition">
-                                    <i class="fas fa-trash-alt mr-1"></i> 削除
-                                </button>
-                                <button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="admin-add-reservation-button bg-green-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-green-600 transition ml-auto">
-                                    <i class="fas fa-user-plus mr-1"></i> 予約者を追加
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(eventAccordion);
-                });
-            };
-
-            renderListToContainer(adminUpcomingEventsList, upcomingEvents, false);
-            renderListToContainer(adminPastEventsList, pastEvents, true);
-
-            // Re-attach all event listeners
-            document.querySelectorAll('.accordion-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    const icon = header.querySelector('.accordion-icon');
-                    content.classList.toggle('hidden');
-                    icon.classList.toggle('rotate-180');
-                });
-            });
-
-            document.querySelectorAll('.edit-event-button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventInfo = JSON.parse(unescape(e.currentTarget.dataset.eventInfo));
-                    showEditEventModal(e.currentTarget.dataset.eventId, eventInfo);
-                });
-            });
-
-            document.querySelectorAll('.delete-event-button').forEach(button => {
-                button.addEventListener('click', (e) => handleDeleteEvent(e.currentTarget.dataset.eventId));
-            });
-            
-            document.querySelectorAll('.edit-reservation-button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const resInfo = JSON.parse(unescape(e.currentTarget.dataset.reservationInfo));
-                    showEditReservationModal(e.currentTarget.dataset.reservationId, resInfo);
-                });
-            });
-
-            document.querySelectorAll('.delete-reservation-button').forEach(button => {
-                button.addEventListener('click', (e) => handleCancelReservation(e.currentTarget.dataset.reservationId, true));
-            });
-
-            document.querySelectorAll('.admin-add-reservation-button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const eventId = e.currentTarget.dataset.eventId;
-                    const eventInfo = JSON.parse(unescape(e.currentTarget.dataset.eventInfo));
-                    showAdminAddReservationModal(eventId, eventInfo);
-                });
-            });
-        }
-        
-        function renderAllReservationsList(events, reservations) {
-            if (reservations.length === 0) {
-                adminAllReservationsList.innerHTML = '<p class="text-gray-500 text-center">まだ予約はありません。</p>';
-                return;
-            }
-            
-            const sortedReservations = reservations.sort((a, b) => {
-                const eventA = events.find(e => e.id === a.eventId);
-                const eventB = events.find(e => e.id === b.eventId);
-                if (!eventA || !eventB) return 0;
-                
-                const dateComparison = new Date(eventA.startTime) - new Date(eventB.startTime);
-                if (dateComparison !== 0) return dateComparison;
-
-                return a.studentId.localeCompare(b.studentId);
-            });
-
-            adminAllReservationsList.innerHTML = `
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" class="py-3 px-6">No.</th>
-                                <th scope="col" class="py-3 px-6">氏名</th>
-                                <th scope="col" class="py-3 px-6">学籍番号</th>
-                                <th scope="col" class="py-3 px-6">参加日時</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${sortedReservations.map((res, index) => {
-                                const event = events.find(e => e.id === res.eventId);
-                                return `
-                                    <tr class="bg-white border-b clickable-row" data-reservation-info="${escape(JSON.stringify(res))}" data-event-info="${event ? escape(JSON.stringify(event)) : ''}">
-                                        <td class="py-4 px-6 font-medium text-gray-900">${index + 1}</td>
-                                        <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">${res.name}</td>
-                                        <td class="py-4 px-6">${res.studentId}</td>
-                                        <td class="py-4 px-6">${event ? formatDateTimeRange(event.startTime, event.endTime) : 'N/A'}</td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            
-            document.querySelectorAll('#admin-all-reservations-list .clickable-row').forEach(row => {
-                row.addEventListener('click', (e) => {
-                    const resInfo = JSON.parse(unescape(e.currentTarget.dataset.reservationInfo));
-                    const eventInfo = JSON.parse(unescape(e.currentTarget.dataset.eventInfo));
-                    showReservationDetailsModal(resInfo, eventInfo);
-                });
-            });
-        }
-
         // --- モーダル関連の関数 ---
-        function showAdminPasswordModal() {
-            modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4">管理者認証</h3>
-                    <p class="mb-4 text-gray-600">管理者用のパスワードを入力してください。</p>
-                    <form id="admin-password-form">
-                        <input type="password" id="admin-password" class="w-full p-2 border border-gray-300 rounded-md" required>
-                        <p id="admin-password-error" class="text-red-500 text-sm mt-1 hidden">パスワードが違います。</p>
-                        <div class="flex justify-end gap-4 mt-6">
-                            <button type="button" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-md hover:bg-gray-400" onclick="closeModal()">キャンセル</button>
-                            <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-600">認証</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-
-            setTimeout(() => {
-                document.getElementById('admin-password').focus();
-            }, 100);
-
-            document.getElementById('admin-password-form').addEventListener('submit', handleAdminLogin);
-        }
-        
-        function showEditEventModal(eventId, eventInfo) {
-             const startDate = eventInfo.startTime.split('T')[0];
-             const startTime = eventInfo.startTime.split('T')[1];
-             const endTime = eventInfo.endTime.split('T')[1];
-
-             modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4">説明会情報の修正</h3>
-                     <form id="edit-event-form" class="space-y-4">
-                        <input type="hidden" id="edit-event-id" value="${eventId}">
-                        <div>
-                            <label for="edit-event-date" class="block mb-2 font-medium text-gray-700">開催日</label>
-                            <input type="date" id="edit-event-date" class="w-full p-2 border border-gray-300 rounded-md" value="${startDate}" required>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="edit-event-start-time" class="block mb-2 font-medium text-gray-700">開始時間</label>
-                                <input type="time" id="edit-event-start-time" class="w-full p-2 border border-gray-300 rounded-md" value="${startTime}" required>
-                            </div>
-                            <div>
-                                <label for="edit-event-end-time" class="block mb-2 font-medium text-gray-700">終了時間</label>
-                                <input type="time" id="edit-event-end-time" class="w-full p-2 border border-gray-300 rounded-md" value="${endTime}" required>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="edit-event-capacity" class="block mb-2 font-medium text-gray-700">定員</label>
-                            <input type="number" id="edit-event-capacity" min="1" class="w-full p-2 border border-gray-300 rounded-md" value="${eventInfo.capacity}" required>
-                        </div>
-                        <div>
-                            <label for="edit-event-location" class="block mb-2 font-medium text-gray-700">場所</label>
-                            <input type="text" id="edit-event-location" class="w-full p-2 border border-gray-300 rounded-md" value="${eventInfo.location}" required>
-                        </div>
-                        <div>
-                            <label for="edit-event-description" class="block mb-2 font-medium text-gray-700">説明</label>
-                            <textarea id="edit-event-description" rows="3" class="w-full p-2 border border-gray-300 rounded-md">${eventInfo.description || ''}</textarea>
-                        </div>
-                        <div class="flex justify-end gap-4 mt-6">
-                            <button type="button" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-md hover:bg-gray-400" onclick="closeModal()">キャンセル</button>
-                            <button type="submit" class="bg-yellow-500 text-white font-bold py-2 px-6 rounded-md hover:bg-yellow-600">更新</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-            document.getElementById('edit-event-form').addEventListener('submit', handleUpdateEvent);
-        }
-
         function showReservationModal(eventId, eventInfo) {
             const now = new Date();
             const eventStartTime = new Date(eventInfo.startTime);
             const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
             
             if (now > bookingDeadline) {
-                showAlert('この説明会の予約受付は終了しました。参加をご希望の場合は、別途お問い合わせください。', true);
+                showAlert('この説明会の予約受付は終了しました。', true);
                 return; 
             }
 
             modalContent.innerHTML = `
                 <div class="p-6 relative">
                     <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-2xl font-bold">予約情報入力</h3>
-                    </div>
+                    <h3 class="text-2xl font-bold mb-4">予約情報入力</h3>
                     <div class="mb-4 p-3 bg-blue-50 rounded-lg">
                         <p><strong>日時:</strong> ${formatDateTimeRange(eventInfo.startTime, eventInfo.endTime)}</p>
                         <p><strong>場所:</strong> ${eventInfo.location}</p>
@@ -711,25 +334,21 @@
                     <form id="reservation-form">
                         <input type="hidden" id="event-id" value="${eventId}">
                         <div class="space-y-4">
-                            <div><label for="name" class="block mb-1 font-medium">氏名 (漢字; 漢字名がない場合は英字名)</label><input type="text" id="name" placeholder="例: 関大太郎 / Anthony Downs" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div><label for="name-kana" class="block mb-1 font-medium">氏名（読み方）</label><input type="text" id="name-kana" placeholder="例: かんだい たろう / アンソニー ダウンズ" class="w-full p-2 border border-gray-300 rounded-md" required></div>
+                            <div><label for="name" class="block mb-1 font-medium">氏名 (漢字; 漢字名がない場合は英字名)</label><input type="text" id="name" placeholder="例: 関大太郎" class="w-full p-2 border border-gray-300 rounded-md" required></div>
+                            <div><label for="name-kana" class="block mb-1 font-medium">氏名（読み方）</label><input type="text" id="name-kana" placeholder="例: かんだい たろう" class="w-full p-2 border border-gray-300 rounded-md" required></div>
                             <div>
                                 <label for="student-id-prefix" class="block mb-1 font-medium">学籍番号</label>
                                 <div class="flex items-center">
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-900">
-                                        情
-                                    </span>
+                                    <span class="inline-flex items-center px-3 text-sm text-gray-900">情</span>
                                     <input type="text" id="student-id-prefix" placeholder="24" class="w-16 p-2 border border-gray-300 rounded-md" required>
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-900">
-                                        -
-                                    </span>
+                                    <span class="inline-flex items-center px-3 text-sm text-gray-900">-</span>
                                     <input type="text" id="student-id-suffix" placeholder="0123" class="w-full p-2 border border-gray-300 rounded-md" required>
                                 </div>
                             </div>
                             <div><label for="email" class="block mb-1 font-medium">メールアドレス（普段使用するメールアドレス）</label><input type="email" id="email" placeholder="例: t123456@kansai-u.ac.jp" class="w-full p-2 border border-gray-300 rounded-md" required></div>
                             <div><label for="phone-number" class="block mb-1 font-medium">携帯電話番号 (ハイフンなし11桁)</label><input type="tel" id="phone-number" placeholder="例: 08012349876" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div class="mb-4 p-3 bg-blue-50 rounded-lg">
-                                <p><strong>※注意:</strong> 学籍番号と携帯番号は予約の確認・キャンセル時に必要です。確定する前にもう一度ご確認ください。</p>
+                            <div class="mb-4 p-3 bg-yellow-50 rounded-lg text-sm">
+                                <p><strong>※注意:</strong> 予約の確認・キャンセル時に電話番号が必要になりますので、お間違えのないようご入力ください。</p>
                             </div>
                             <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 rounded-md hover:bg-blue-600 transition">予約を確定する</button>
                         </div>
@@ -739,44 +358,9 @@
             modalContainer.classList.remove('hidden');
             document.getElementById('reservation-form').addEventListener('submit', handleAddReservation);
         }
-
-        function showAdminAddReservationModal(eventId, eventInfo) {
-            modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4">管理者による予約追加</h3>
-                    <div class="mb-4 p-3 bg-green-50 rounded-lg">
-                        <p><strong>対象:</strong> ${formatDateTimeRange(eventInfo.startTime, eventInfo.endTime)}</p>
-                    </div>
-                    <form id="admin-reservation-form">
-                        <input type="hidden" id="event-id" value="${eventId}">
-                        <div class="space-y-4">
-                            <div><label for="name" class="block mb-1 font-medium">氏名</label><input type="text" id="name" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div><label for="name-kana" class="block mb-1 font-medium">氏名（読み方）</label><input type="text" id="name-kana" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div>
-                                <label for="student-id-prefix" class="block mb-1 font-medium">学籍番号</label>
-                                <div class="flex items-center">
-                                    <span class="px-3">情</span>
-                                    <input type="text" id="student-id-prefix" class="w-16 p-2 border" required>
-                                    <span class="px-3">-</span>
-                                    <input type="text" id="student-id-suffix" class="w-full p-2 border" required>
-                                </div>
-                            </div>
-                            <div><label for="email" class="block mb-1 font-medium">メールアドレス</label><input type="email" id="email" class="w-full p-2 border" required></div>
-                            <div><label for="phone-number" class="block mb-1 font-medium">携帯電話番号</label><input type="tel" id="phone-number" class="w-full p-2 border" required></div>
-                            <div><label for="admin-memo" class="block mb-1 font-medium">管理者用メモ</label><textarea id="admin-memo" rows="2" class="w-full p-2 border"></textarea></div>
-                            <button type="submit" class="w-full bg-green-500 text-white font-bold py-3 rounded-md hover:bg-green-600">予約を追加する</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-            document.getElementById('admin-reservation-form').addEventListener('submit', handleAdminAddReservation);
-        }
         
-        function showCancelConfirmationModal(reservations, eventData) {
-            const reservation = reservations[0];
-            const eventInfo = eventData[reservation.eventId];
+        function showCancelConfirmationModal(reservation) {
+            const eventInfo = allEventsCache.find(e => e.id === reservation.eventId);
             modalContent.innerHTML = `
                  <div class="p-6 relative">
                     <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
@@ -785,7 +369,7 @@
                     <div class="mb-6 p-4 bg-gray-100 rounded-lg">
                         <p><strong>日時:</strong> ${eventInfo ? formatDateTimeRange(eventInfo.startTime, eventInfo.endTime) : '情報なし'}</p>
                         <p><strong>場所:</strong> ${eventInfo ? eventInfo.location : '情報なし'}</p>
-                        <p><strong>予約者名:</strong> ${reservation.name} (${reservation.nameKana})</p>
+                        <p><strong>予約者名:</strong> ${reservation.name}</p>
                         <p><strong>学籍番号:</strong> ${reservation.studentId}</p>
                     </div>
                     <div class="flex justify-end gap-4">
@@ -797,137 +381,6 @@
             modalContainer.classList.remove('hidden');
             document.getElementById('confirm-cancel-button').addEventListener('click', (e) => handleCancelReservation(e.currentTarget.dataset.reservationId));
         }
-        
-        function showEditReservationModal(reservationId, resInfo) {
-            const studentIdParts = resInfo.studentId.replace('情','').split('-');
-            modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4">予約情報の修正</h3>
-                    <form id="edit-reservation-form">
-                        <input type="hidden" id="edit-reservation-id" value="${reservationId}">
-                        <div class="space-y-4">
-                            <div><label for="edit-name" class="block mb-1 font-medium">氏名</label><input type="text" id="edit-name" value="${resInfo.name}" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div><label for="edit-name-kana" class="block mb-1 font-medium">氏名（読み方）</label><input type="text" id="edit-name-kana" value="${resInfo.nameKana}" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div>
-                                <label for="edit-student-id-prefix" class="block mb-1 font-medium">学籍番号</label>
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-900">情</span>
-                                    <input type="text" id="edit-student-id-prefix" value="${studentIdParts[0]}" class="w-16 p-2 border border-gray-300 rounded-md" required>
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-900">-</span>
-                                    <input type="text" id="edit-student-id-suffix" value="${studentIdParts[1]}" class="w-full p-2 border border-gray-300 rounded-md" required>
-                                </div>
-                            </div>
-                            <div><label for="edit-email" class="block mb-1 font-medium">メールアドレス</label><input type="email" id="edit-email" value="${resInfo.email}" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div><label for="edit-phone-number" class="block mb-1 font-medium">携帯電話番号</label><input type="tel" id="edit-phone-number" value="${resInfo.phoneNumber}" class="w-full p-2 border border-gray-300 rounded-md" required></div>
-                            <div>
-                                <label for="edit-admin-memo" class="block mb-1 font-medium">管理者用メモ</label>
-                                <textarea id="edit-admin-memo" rows="3" class="w-full p-2 border border-gray-300 rounded-md">${resInfo.adminMemo || ''}</textarea>
-                            </div>
-                            <div class="flex justify-end gap-4 mt-6">
-                                <button type="button" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-md hover:bg-gray-400" onclick="closeModal()">キャンセル</button>
-                                <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-600">更新</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-            document.getElementById('edit-reservation-form').addEventListener('submit', handleUpdateReservation);
-        }
-        
-        function showReservationDetailsModal(resInfo, eventInfo) {
-            modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4">予約詳細</h3>
-                    <div class="space-y-3 text-gray-700">
-                        <p><strong>氏名:</strong> ${resInfo.name} (${resInfo.nameKana})</p>
-                        <p><strong>学籍番号:</strong> ${resInfo.studentId}</p>
-                        <p><strong>メールアドレス:</strong> ${resInfo.email}</p>
-                        <p><strong>電話番号:</strong> ${resInfo.phoneNumber}</p>
-                        <hr class="my-3">
-                        <p><strong>参加イベント:</strong> ${eventInfo ? formatDateTimeRange(eventInfo.startTime, eventInfo.endTime) : 'N/A'}</p>
-                        <p><strong>場所:</strong> ${eventInfo ? eventInfo.location : 'N/A'}</p>
-                        <hr class="my-3">
-                        <div>
-                            <p><strong>管理者用メモ:</strong></p>
-                            <div class="mt-1 p-2 bg-gray-50 rounded whitespace-pre-wrap min-h-[50px]">${resInfo.adminMemo || 'メモはありません'}</div>
-                        </div>
-                    </div>
-                    <div class="flex justify-end gap-4 mt-6">
-                        <button type="button" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-md hover:bg-gray-400" onclick="closeModal()">閉じる</button>
-                        <button id="edit-details-button" class="bg-yellow-500 text-white font-bold py-2 px-6 rounded-md hover:bg-yellow-600">編集</button>
-                    </div>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-            document.getElementById('edit-details-button').addEventListener('click', () => {
-                showEditReservationModal(resInfo.id, resInfo);
-            });
-        }
-
-        function showReservationListModal(reservations) {
-            modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4">予約者リスト</h3>
-                    ${reservations.length > 0 ? `
-                        <div class="max-h-96 overflow-y-auto">
-                            <table class="w-full text-sm text-left text-gray-500">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-6">学籍番号</th>
-                                        <th scope="col" class="py-3 px-6">電話番号</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${reservations.map(r => `
-                                        <tr class="bg-white border-b">
-                                            <td class="py-4 px-6">${maskStudentId(r.studentId)}</td>
-                                            <td class="py-4 px-6">${maskPhoneNumber(r.phoneNumber)}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    ` : '<p class="text-gray-500">この説明会にはまだ予約がありません。</p>'}
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-        }
-
-        function showDeleteConfirmationModal(onConfirm) {
-            modalContent.innerHTML = `
-                <div class="p-6 relative">
-                    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="closeModal()"><i class="fas fa-times text-2xl"></i></button>
-                    <h3 class="text-2xl font-bold mb-4 text-red-600">最終確認</h3>
-                    <p class="mb-4 text-gray-600">この操作は元に戻せません。実行するには、管理者パスワードを入力してください。</p>
-                    <form id="delete-confirm-form">
-                        <input type="password" id="delete-confirm-password" class="w-full p-2 border border-gray-300 rounded-md" required>
-                        <p id="delete-confirm-error" class="text-red-500 text-sm mt-1 hidden">パスワードが違います。</p>
-                        <div class="flex justify-end gap-4 mt-6">
-                            <button type="button" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-md hover:bg-gray-400" onclick="closeModal()">キャンセル</button>
-                            <button type="submit" class="bg-red-500 text-white font-bold py-2 px-6 rounded-md hover:bg-red-600">削除を実行</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-
-            const form = document.getElementById('delete-confirm-form');
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const password = document.getElementById('delete-confirm-password').value;
-                const errorP = document.getElementById('delete-confirm-error');
-                const inputHash = await sha256(password);
-                if (inputHash === ADMIN_PASSWORD_HASH) {
-                    onConfirm();
-                } else {
-                    errorP.classList.remove('hidden');
-                }
-            });
-        }
 
         function closeModal() {
             modalContainer.classList.add('hidden');
@@ -935,197 +388,59 @@
         }
 
         // --- データ操作ハンドラ ---
-        async function handleAdminLogin(e) {
-            e.preventDefault();
-            const password = document.getElementById('admin-password').value;
-            const errorP = document.getElementById('admin-password-error');
-            const inputHash = await sha256(password);
-            if (inputHash === ADMIN_PASSWORD_HASH) {
-                switchView('admin');
-                closeModal();
-            } else {
-                errorP.classList.remove('hidden');
-            }
-        }
-
-        async function handleAddEvent(e) {
-            e.preventDefault();
-            const date = document.getElementById('event-date').value;
-            const startTime = document.getElementById('event-start-time').value;
-            const endTime = document.getElementById('event-end-time').value;
-
-            if (endTime <= startTime) {
-                showAlert('終了時間は開始時間より後に設定してください。', true);
-                return;
-            }
-
-            const eventData = {
-                startTime: `${date}T${startTime}`,
-                endTime: `${date}T${endTime}`,
-                capacity: parseInt(document.getElementById('event-capacity').value, 10),
-                location: document.getElementById('event-location').value,
-                description: document.getElementById('event-description').value,
-                createdAt: serverTimestamp()
-            };
-            try {
-                const eventsRef = collection(db, 'events');
-                await addDoc(eventsRef, eventData);
-                showAlert('新しい説明会を登録しました。');
-                addEventForm.reset();
-            } catch (error) {
-                console.error("説明会の追加に失敗: ", error);
-                showAlert('説明会の登録に失敗しました。', true);
-            }
-        }
-
-        async function handleUpdateEvent(e) {
-            e.preventDefault();
-            const eventId = document.getElementById('edit-event-id').value;
-            const date = document.getElementById('edit-event-date').value;
-            const startTime = document.getElementById('edit-event-start-time').value;
-            const endTime = document.getElementById('edit-event-end-time').value;
-            
-            if (endTime <= startTime) {
-                showAlert('終了時間は開始時間より後に設定してください。', true);
-                return;
-            }
-
-            const updatedData = {
-                startTime: `${date}T${startTime}`,
-                endTime: `${date}T${endTime}`,
-                capacity: parseInt(document.getElementById('edit-event-capacity').value, 10),
-                location: document.getElementById('edit-event-location').value,
-                description: document.getElementById('edit-event-description').value,
-            };
-
-            try {
-                const eventDocRef = doc(db, 'events', eventId);
-                await updateDoc(eventDocRef, updatedData);
-                showAlert('説明会情報を更新しました。');
-                closeModal();
-            } catch (error) {
-                console.error("説明会情報の更新に失敗: ", error);
-                showAlert('更新に失敗しました。', true);
-            }
-        }
-
-        function handleDeleteEvent(eventId) {
-            showDeleteConfirmationModal(async () => {
-                try {
-                    const reservationsRef = collection(db, 'reservations');
-                    const q = query(reservationsRef, where("eventId", "==", eventId));
-                    const querySnapshot = await getDocs(q);
-                    const deletePromises = [];
-                    querySnapshot.forEach((doc) => {
-                        deletePromises.push(deleteDoc(doc.ref));
-                    });
-                    await Promise.all(deletePromises);
-                    
-                    await deleteDoc(doc(db, 'events', eventId));
-                    
-                    showAlert('説明会と関連する予約を削除しました。');
-                    closeModal();
-                } catch (error) {
-                    console.error("説明会の削除に失敗: ", error);
-                    showAlert('削除に失敗しました。', true);
-                }
-            });
-        }
-
         async function handleAddReservation(e) {
             e.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const nameKana = document.getElementById('name-kana').value.trim();
-            const studentIdPrefix = document.getElementById('student-id-prefix').value.trim();
-            const studentIdSuffix = document.getElementById('student-id-suffix').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phoneNumber = document.getElementById('phone-number').value.trim();
-            const eventId = document.getElementById('event-id').value;
+            const form = e.target;
+            const name = form.querySelector('#name').value.trim();
+            const nameKana = form.querySelector('#name-kana').value.trim();
+            const studentIdPrefix = form.querySelector('#student-id-prefix').value.trim();
+            const studentIdSuffix = form.querySelector('#student-id-suffix').value.trim();
+            const email = form.querySelector('#email').value.trim();
+            const phoneNumber = form.querySelector('#phone-number').value.trim();
+            const eventId = form.querySelector('#event-id').value;
             
             const studentId = `情${studentIdPrefix}-${studentIdSuffix}`;
 
             // Validation
-            if (!name || !nameKana || !studentIdPrefix || !studentIdSuffix || !email || !phoneNumber) {
-                showAlert('すべての項目を入力してください。', true);
-                return;
-            }
             const studentIdRegex = /^情\d{2}-\d{1,4}$/;
             if (!studentIdRegex.test(studentId)) {
-                showAlert('学籍番号は「情XX-YYYY」の形式で入力してください。', true);
-                return;
+                showAlert('学籍番号は「情XX-YYYY」の形式で入力してください。', true); return;
             }
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showAlert('有効なメールアドレスを入力してください。', true);
-                return;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showAlert('有効なメールアドレスを入力してください。', true); return;
             }
-            const phoneRegex = /^\d{11}$/;
-            if (!phoneRegex.test(phoneNumber)) {
-                showAlert('電話番号はハイフンなしの11桁で入力してください。', true);
-                return;
+            if (!/^\d{11}$/.test(phoneNumber)) {
+                showAlert('電話番号はハイフンなしの11桁で入力してください。', true); return;
             }
 
-            const event = allEventsCache.find(e => e.id === eventId);
-            if (!event) {
-                showAlert('選択された説明会が見つかりません。ページを更新してください。', true);
-                return;
-            }
-            const now = new Date();
-            const eventStartTime = new Date(event.startTime);
-            const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
-            if (now > bookingDeadline) {
-                showAlert('この説明会の予約受付は終了しました。', true);
-                closeModal();
-                return;
-            }
-
-            const reservationData = {
-                eventId: eventId,
-                name: name,
-                nameKana: nameKana,
-                studentId: studentId,
-                email: email,
-                phoneNumber: phoneNumber,
-                createdAt: serverTimestamp(),
-                adminMemo: ""
-            };
+            const reservationData = { eventId, name, nameKana, studentId, email, phoneNumber, createdAt: serverTimestamp() };
             
             try {
                 const reservationsRef = collection(db, 'reservations');
                 
                 // 重複予約チェック
-                const qPhone = query(reservationsRef, where("phoneNumber", "==", reservationData.phoneNumber));
+                const qPhone = query(reservationsRef, where("phoneNumber", "==", phoneNumber));
                 const phoneSnapshot = await getDocs(qPhone);
-                
                 let hasActiveReservation = false;
                 if (!phoneSnapshot.empty) {
                     for(const resDoc of phoneSnapshot.docs) {
-                        const resData = resDoc.data();
-                        const reservedEvent = allEventsCache.find(e => e.id === resData.eventId);
+                        const reservedEvent = allEventsCache.find(e => e.id === resDoc.data().eventId);
                         if (reservedEvent && new Date(reservedEvent.endTime) >= new Date()) {
-                            hasActiveReservation = true;
-                            break;
+                            hasActiveReservation = true; break;
                         }
                     }
                 }
-
                 if (hasActiveReservation) {
-                    showAlert('この電話番号は既に有効な予約があります。', true);
-                    return;
+                    showAlert('この電話番号は既に有効な予約があります。', true); return;
                 }
                 
                 // 定員チェック
-                const qCapacity = query(reservationsRef, where("eventId", "==", reservationData.eventId));
+                const qCapacity = query(reservationsRef, where("eventId", "==", eventId));
                 const capacitySnapshot = await getDocs(qCapacity);
-                const currentReservations = capacitySnapshot.size;
-                
-                const eventForCapacityCheck = allEventsCache.find(e => e.id === reservationData.eventId);
-                const capacity = eventForCapacityCheck ? eventForCapacityCheck.capacity : 0;
-                
-                if (currentReservations >= capacity) {
+                const event = allEventsCache.find(e => e.id === eventId);
+                if (capacitySnapshot.size >= (event?.capacity || 0)) {
                     showAlert('申し訳ありません、この説明会は満員になりました。', true);
-                    closeModal();
-                    return;
+                    closeModal(); return;
                 }
 
                 await addDoc(reservationsRef, reservationData);
@@ -1137,216 +452,64 @@
             }
         }
 
-        async function handleAdminAddReservation(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const nameKana = document.getElementById('name-kana').value.trim();
-            const studentIdPrefix = document.getElementById('student-id-prefix').value.trim();
-            const studentIdSuffix = document.getElementById('student-id-suffix').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phoneNumber = document.getElementById('phone-number').value.trim();
-            const eventId = document.getElementById('event-id').value;
-            const adminMemo = document.getElementById('admin-memo').value.trim();
-
-            const studentId = `情${studentIdPrefix}-${studentIdSuffix}`;
-
-            if (!name || !nameKana || !studentIdPrefix || !studentIdSuffix || !email || !phoneNumber) {
-                showAlert('氏名、学籍番号、メール、電話番号は必須です。', true);
-                return;
-            }
-
-            const reservationData = {
-                eventId, name, nameKana, studentId, email, phoneNumber, adminMemo,
-                createdAt: serverTimestamp()
-            };
-            
-            try {
-                await addDoc(collection(db, 'reservations'), reservationData);
-                showAlert('予約を追加しました。');
-                closeModal();
-            } catch(error) {
-                console.error("管理者による予約追加に失敗: ", error);
-                showAlert('予約の追加に失敗しました。', true);
-            }
-        }
-        
-        async function handleUpdateReservation(e) {
-            e.preventDefault();
-            const reservationId = document.getElementById('edit-reservation-id').value;
-            const name = document.getElementById('edit-name').value.trim();
-            const nameKana = document.getElementById('edit-name-kana').value.trim();
-            const studentIdPrefix = document.getElementById('edit-student-id-prefix').value.trim();
-            const studentIdSuffix = document.getElementById('edit-student-id-suffix').value.trim();
-            const email = document.getElementById('edit-email').value.trim();
-            const phoneNumber = document.getElementById('edit-phone-number').value.trim();
-            const adminMemo = document.getElementById('edit-admin-memo').value.trim();
-
-            const studentId = `情${studentIdPrefix}-${studentIdSuffix}`;
-
-            // Validation
-            if (!name || !nameKana || !studentIdPrefix || !studentIdSuffix || !email || !phoneNumber) {
-                showAlert('すべての項目を入力してください。', true);
-                return;
-            }
-            const studentIdRegex = /^情\d{2}-\d{1,4}$/;
-            if (!studentIdRegex.test(studentId)) {
-                showAlert('学籍番号は「情XX-YYYY」の形式で入力してください。', true);
-                return;
-            }
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showAlert('有効なメールアドレスを入力してください。', true);
-                return;
-            }
-            const phoneRegex = /^\d{11}$/;
-            if (!phoneRegex.test(phoneNumber)) {
-                showAlert('電話番号はハイフンなしの11桁で入力してください。', true);
-                return;
-            }
-
-            const updatedData = {
-                name, nameKana, studentId, email, phoneNumber, adminMemo
-            };
-
-            try {
-                const reservationDocRef = doc(db, 'reservations', reservationId);
-                await updateDoc(reservationDocRef, updatedData);
-                showAlert('予約情報を更新しました。');
-                closeModal();
-            } catch (error) {
-                console.error("予約情報の更新に失敗: ", error);
-                showAlert('更新に失敗しました。', true);
-            }
-        }
-
-
         async function handleSearchReservation() {
             const phoneNumber = cancelPhoneNumberInput.value.trim();
-            
-            if (!phoneNumber) {
-                showAlert('電話番号を入力してください。', true);
-                return;
-            }
-            const phoneRegex = /^\d{11}$/;
-            if (!phoneRegex.test(phoneNumber)) {
-                showAlert('電話番号はハイフンなしの11桁で入力してください。', true);
-                return;
+            if (!/^\d{11}$/.test(phoneNumber)) {
+                showAlert('電話番号はハイフンなしの11桁で入力してください。', true); return;
             }
 
             try {
-                const reservationsRef = collection(db, 'reservations');
-                const q = query(reservationsRef, where("phoneNumber", "==", phoneNumber));
+                const q = query(collection(db, 'reservations'), where("phoneNumber", "==", phoneNumber));
                 const querySnapshot = await getDocs(q);
 
-                if (querySnapshot.empty) {
-                    showAlert('その電話番号での予約は見つかりませんでした。', true);
-                    return;
-                }
-                
                 let foundReservation = null;
                 for(const resDoc of querySnapshot.docs) {
-                    const resData = resDoc.data();
-                    const event = allEventsCache.find(e => e.id === resData.eventId);
+                    const event = allEventsCache.find(e => e.id === resDoc.data().eventId);
                     if (event && new Date(event.endTime) >= new Date()) {
-                        foundReservation = { id: resDoc.id, ...resData };
+                        foundReservation = { id: resDoc.id, ...resDoc.data() };
                         break;
                     }
                 }
 
-                if (!foundReservation) {
-                    showAlert('現在有効な予約が見つかりませんでした。', true);
-                    return;
+                if (foundReservation) {
+                    showCancelConfirmationModal(foundReservation);
+                } else {
+                    showAlert('有効な予約が見つかりませんでした。', true);
                 }
-
-                const eventIds = [foundReservation.eventId];
-                const eventData = {};
-                if (eventIds.length > 0) {
-                    const eventsRef = collection(db, 'events');
-                    const eventQuery = query(eventsRef, where("__name__", "in", eventIds));
-                    const eventSnapshot = await getDocs(eventQuery);
-                    eventSnapshot.forEach(doc => {
-                        eventData[doc.id] = doc.data();
-                    });
-                }
-                
-                showCancelConfirmationModal([foundReservation], eventData);
-
             } catch (error) {
                 console.error("予約の検索に失敗: ", error);
                 showAlert('予約の検索中にエラーが発生しました。', true);
             }
         }
 
-        function handleCancelReservation(reservationId, isAdmin = false) {
-            const cancelLogic = async () => {
-                try {
-                    await deleteDoc(doc(db, 'reservations', reservationId));
-                    showAlert('予約をキャンセルしました。');
-                    closeModal();
-                    if(!isAdmin) {
-                        cancelPhoneNumberInput.value = '';
-                    }
-                } catch(error) {
-                    console.error("予約のキャンセルに失敗: ", error);
-                    showAlert('キャンセルに失敗しました。', true);
-                }
-            };
-
-            if (isAdmin) {
-                showDeleteConfirmationModal(cancelLogic);
-            } else {
-                 if (confirm('この予約をキャンセルしますか？')) {
-                    cancelLogic();
-                 }
+        async function handleCancelReservation(reservationId) {
+            try {
+                await deleteDoc(doc(db, 'reservations', reservationId));
+                showAlert('予約をキャンセルしました。');
+                closeModal();
+                cancelPhoneNumberInput.value = '';
+            } catch(error) {
+                console.error("予約のキャンセルに失敗: ", error);
+                showAlert('キャンセルに失敗しました。', true);
             }
         }
 
         // --- ユーティリティ関数 ---
         function formatDateTimeRange(isoStart, isoEnd) {
-            if (!isoStart || !isoEnd) return '日時未定';
             try {
                 const startDate = new Date(isoStart);
                 const endDate = new Date(isoEnd);
-
                 const optionsDate = { year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' };
                 const optionsTime = { hour: '2-digit', minute: '2-digit' };
-
                 const dateStr = new Intl.DateTimeFormat('ja-JP', optionsDate).format(startDate);
                 const startTimeStr = new Intl.DateTimeFormat('ja-JP', optionsTime).format(startDate);
                 const endTimeStr = new Intl.DateTimeFormat('ja-JP', optionsTime).format(endDate);
-                
-                if (startDate.toDateString() === endDate.toDateString()) {
-                    return `${dateStr} ${startTimeStr} - ${endTimeStr}`;
-                } else {
-                    const endDateStr = new Intl.DateTimeFormat('ja-JP', optionsDate).format(endDate);
-                    return `${dateStr} ${startTimeStr} - ${endDateStr} ${endTimeStr}`;
-                }
+                return `${dateStr} ${startTimeStr} - ${endTimeStr}`;
             } catch(e) {
-                console.error("Date formatting error:", e);
                 return '日時形式エラー';
             }
         }
         
-        function maskStudentId(studentId) {
-            if (!studentId || !studentId.includes('-')) return studentId;
-            const parts = studentId.split('-');
-            return `情**-${parts[1]}`;
-        }
-
-        function maskPhoneNumber(phoneNumber) {
-            if (!phoneNumber || phoneNumber.length !== 11) return phoneNumber;
-            return `${phoneNumber.substring(0, 3)}-${phoneNumber.substring(3, 4)}**${phoneNumber.substring(6, 7)}-${phoneNumber.substring(7,8)}**${phoneNumber.substring(10, 11)}`;
-        }
-
-
-        // 文字列をSHA-256ハッシュ化する非同期関数
-        async function sha256(message) {
-          const msgBuffer = new TextEncoder().encode(message);                     
-          const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-          const hashArray = Array.from(new Uint8Array(hashBuffer));
-          const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-          return hashHex;
-        }
         // グローバルスコープに関数を公開
         window.closeModal = closeModal;
         // --- 初期化処理の実行 ---
@@ -1354,4 +517,3 @@
     </script>
 </body>
 </html>
-
