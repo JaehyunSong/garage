@@ -39,7 +39,7 @@
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>重要な通知（場所変更、応募者への課題関連など）のため、<strong class="text-gray-800">普段お使いのメールアドレス</strong>をご登録ください。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">数字はすべて半角</strong>でご入力ください。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>友人と参加をご希望の場合も、<strong class="text-gray-800">各自でご予約</strong>をお願いします。</div></li>
-                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">開始1時間前まで予約可能</strong>です。</div></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">開始1時間前まで予約可能</strong>です（午前の枠は前日24時まで）。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>お問い合わせ: <a href="mailto:song@kansai-u.ac.jp" class="text-blue-500 hover:underline">song@kansai-u.ac.jp</a></div></li>
                 </ul>
             </div>
@@ -244,9 +244,12 @@
                 const eventStartTime = new Date(event.startTime);
                 const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
                 const isPastDeadline = now > bookingDeadline;
+                const isManuallyClosed = event.isReceptionClosed === true;
                 
                 let statusBadge;
-                if (isFull) {
+                if (isManuallyClosed) {
+                    statusBadge = `<span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">受付中止</span>`;
+                } else if (isFull) {
                     statusBadge = `<span class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">満員</span>`;
                 } else if (isPastDeadline) {
                     statusBadge = `<span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">受付終了</span>`;
@@ -257,7 +260,9 @@
                 }
 
                 let actionAreaHTML;
-                if (isPastDeadline) {
+                if (isManuallyClosed) {
+                    actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">受付中止</div>`;
+                } else if (isPastDeadline) {
                     actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">受付終了</div>`;
                 } else if (isFull) {
                     actionAreaHTML = `<button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>満員</button>`;
@@ -314,6 +319,11 @@
         
         // --- モーダル関連の関数 ---
         function showReservationModal(eventId, eventInfo) {
+            if (eventInfo.isReceptionClosed) {
+                showAlert('この説明会の受付は現在中止されています。', true);
+                return;
+            }
+
             const now = new Date();
             const eventStartTime = new Date(eventInfo.startTime);
             const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
@@ -434,10 +444,14 @@
                     showAlert('この電話番号は既に有効な予約があります。', true); return;
                 }
                 
-                // 定員チェック
+                // 最終チェック（手動での受付中止を含む）
+                const event = allEventsCache.find(e => e.id === eventId);
+                if (event?.isReceptionClosed) {
+                    showAlert('申し訳ありません、この説明会の受付は中止されました。', true);
+                    closeModal(); return;
+                }
                 const qCapacity = query(reservationsRef, where("eventId", "==", eventId));
                 const capacitySnapshot = await getDocs(qCapacity);
-                const event = allEventsCache.find(e => e.id === eventId);
                 if (capacitySnapshot.size >= (event?.capacity || 0)) {
                     showAlert('申し訳ありません、この説明会は満員になりました。', true);
                     closeModal(); return;
