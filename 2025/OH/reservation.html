@@ -267,7 +267,7 @@
                 } else if (isFull) {
                     actionAreaHTML = `<button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>満員</button>`;
                 } else {
-                    actionAreaHTML = `<button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow">予約する</button>`;
+                    actionAreaHTML = `<button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow">予約</button>`;
                 }
                 
                 const eventCard = document.createElement('div');
