@@ -40,6 +40,7 @@
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">数字はすべて半角</strong>でご入力ください。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>友人と参加をご希望の場合も、<strong class="text-gray-800">各自でご予約</strong>をお願いします。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">開始1時間前まで予約可能</strong>です（午前の枠は前日24時まで）。</div></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div><strong class="text-gray-800">参加できる枠がない場合</strong>は宋にご連絡ください。</div></li>
                     <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><div>お問い合わせ: <a href="mailto:song@kansai-u.ac.jp" class="text-blue-500 hover:underline">song@kansai-u.ac.jp</a></div></li>
                 </ul>
             </div>
@@ -48,7 +49,7 @@
         <!-- 予約者向けビュー -->
         <main id="user-view">
             <section class="mb-12">
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-blue-500 pl-3">開催予定の説明会</h2>
+                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-blue-500 pl-3">開催予定のオフィスアワー</h2>
                 <div id="events-list" class="space-y-4">
                     <!-- 説明会情報がここに動的に追加されます -->
                     <div class="text-center p-8 bg-white rounded-lg shadow">
@@ -59,7 +60,7 @@
             </section>
 
             <section id="past-events-section" class="mb-12">
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-gray-500 pl-3">終了した説明会</h2>
+                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-gray-500 pl-3">終了したオフィスアワー</h2>
                 <div id="past-events-list" class="space-y-4">
                     <!-- 終了した説明会がここに表示されます -->
                 </div>
@@ -99,7 +100,6 @@
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script type="module">
-        // Firebase SDKのインポート
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
@@ -117,7 +117,6 @@
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- Firebaseの初期化 ---
         const firebaseConfig = {
             apiKey: "AIzaSyBRyXKDLL5XVOI4LK9ZYIBQrqN_YLaGwdY",
             authDomain: "song-zemi.firebaseapp.com",
@@ -153,11 +152,10 @@
 
             } catch(e) {
                 console.error("Firebaseの初期化に失敗しました: ", e);
-                 showAlert("データベースに接続できませんでした。", true);
+                showAlert("データベースに接続できませんでした。", true);
             }
         }
 
-        // --- DOM要素の取得 ---
         const eventsListContainer = document.getElementById('events-list');
         const pastEventsListContainer = document.getElementById('past-events-list');
         const modalContainer = document.getElementById('modal-container');
@@ -165,7 +163,6 @@
         const searchReservationButton = document.getElementById('search-reservation-button');
         const cancelPhoneNumberInput = document.getElementById('cancel-phone-number');
 
-        // --- イベントリスナー ---
         searchReservationButton.addEventListener('click', handleSearchReservation);
         modalContainer.addEventListener('click', (e) => {
             if (e.target === modalContainer) closeModal();
@@ -176,7 +173,6 @@
             }
         });
 
-        // --- ビュー関連の関数 ---
         function showAlert(message, isError = false) {
             const title = isError ? 'エラー' : '通知';
             const icon = isError ? 'fa-times-circle text-red-500' : 'fa-check-circle text-green-500';
@@ -194,7 +190,6 @@
             modalContainer.classList.remove('hidden');
         }
 
-        // --- データ購読と描画 ---
         function subscribeToData() {
             if (unsubscribeEvents) unsubscribeEvents();
             if (unsubscribeReservations) unsubscribeReservations();
@@ -237,8 +232,20 @@
             eventsListContainer.innerHTML = '';
             events.forEach(event => {
                 const eventReservations = reservations.filter(r => r.eventId === event.id);
-                const remaining = event.capacity - eventReservations.length;
+                const reservedCount = eventReservations.length;
+                const remaining = event.capacity - reservedCount;
                 const isFull = remaining <= 0;
+
+                const occupancyRate = event.capacity > 0 
+                    ? Math.min(Math.round((reservedCount / event.capacity) * 100), 100) 
+                    : 0;
+
+                let progressBarColor = 'bg-blue-500';
+                if (isFull) {
+                    progressBarColor = 'bg-red-500';
+                } else if (occupancyRate >= 80) {
+                    progressBarColor = 'bg-yellow-500';
+                }
                 
                 const now = new Date();
                 const eventStartTime = new Date(event.startTime);
@@ -261,28 +268,36 @@
 
                 let actionAreaHTML;
                 if (isManuallyClosed) {
-                    actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">受付中止</div>`;
+                    actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-md text-center">受付中止</div>`;
                 } else if (isPastDeadline) {
-                    actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-md text-center">受付終了</div>`;
+                    actionAreaHTML = `<div class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-md text-center">受付終了</div>`;
                 } else if (isFull) {
-                    actionAreaHTML = `<button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>満員</button>`;
+                    actionAreaHTML = `<button class="w-full bg-gray-400 text-white font-bold py-3 px-4 rounded-md cursor-not-allowed" disabled>満員</button>`;
                 } else {
-                    actionAreaHTML = `<button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-600 transition shadow">予約</button>`;
+                    actionAreaHTML = `<button data-event-id="${event.id}" data-event-info="${escape(JSON.stringify(event))}" class="reserve-button w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-600 transition shadow">予約</button>`;
                 }
                 
                 const eventCard = document.createElement('div');
-                eventCard.className = 'bg-white p-6 rounded-lg shadow-md transition hover:shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4';
+                eventCard.className = 'bg-white p-6 rounded-lg shadow-md transition hover:shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6';
                 eventCard.innerHTML = `
-                    <div class="flex-grow">
+                    <div class="flex-grow w-full">
                         <div class="flex items-center gap-4 mb-2">
                             <h3 class="text-xl font-bold text-gray-800">${formatDateTimeRange(event.startTime, event.endTime)}</h3>
                             ${statusBadge}
                         </div>
                         <p class="text-gray-600"><i class="fas fa-map-marker-alt w-5 text-center mr-1 text-blue-500"></i> ${event.location}</p>
-                        <p class="text-gray-600"><i class="fas fa-users w-5 text-center mr-1 text-blue-500"></i> 定員: ${event.capacity}名 (残り: ${remaining > 0 ? remaining : 0}名)</p>
-                        ${event.description ? `<p class="mt-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-md">${event.description.replace(/\n/g, '<br>')}</p>` : ''}
+                        <div class="mt-2 max-w-md">
+                            <div class="flex justify-between items-center text-sm text-gray-600 mb-1">
+                                <span><i class="fas fa-users w-5 text-center mr-1 text-blue-500"></i> 予約状況: <strong>${reservedCount}</strong> / ${event.capacity}名 (残: ${remaining > 0 ? remaining : 0}名)</span>
+                                <span class="font-semibold text-xs ${occupancyRate >= 80 ? 'text-orange-600' : 'text-gray-500'}">${occupancyRate}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                <div class="${progressBarColor} h-2.5 rounded-full transition-all duration-500" style="width: ${occupancyRate}%"></div>
+                            </div>
+                        </div>
+                        ${event.description ? `<div class="mt-3 text-sm text-gray-600 bg-gray-50 p-3 rounded-md border border-gray-100">${event.description.replace(/\n/g, '<br>')}</div>` : ''}
                     </div>
-                    <div class="flex flex-col gap-2 w-full md:w-auto">
+                    <div class="w-full md:w-36 md:flex-shrink-0">
                         ${actionAreaHTML}
                     </div>
                 `;
@@ -303,21 +318,20 @@
             pastEventsListContainer.innerHTML = '';
             events.forEach(event => {
                 const eventCard = document.createElement('div');
-                eventCard.className = 'bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 opacity-70';
+                eventCard.className = 'bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 opacity-70';
                 eventCard.innerHTML = `
-                    <div class="flex-grow">
+                    <div class="flex-grow w-full">
                         <h3 class="text-xl font-bold text-gray-500">${formatDateTimeRange(event.startTime, event.endTime)}</h3>
                         <p class="text-gray-500"><i class="fas fa-map-marker-alt w-5 text-center mr-1"></i> ${event.location}</p>
                     </div>
-                     <div class="flex flex-col gap-2 w-full md:w-auto">
-                        <button class="w-full bg-gray-400 text-white font-bold py-3 px-8 rounded-md cursor-not-allowed" disabled>終了しました</button>
+                    <div class="w-full md:w-36 md:flex-shrink-0">
+                        <button class="w-full bg-gray-400 text-white font-bold py-3 px-4 rounded-md cursor-not-allowed" disabled>終了しました</button>
                     </div>
                 `;
                 pastEventsListContainer.appendChild(eventCard);
             });
         }
         
-        // --- モーダル関連の関数 ---
         function showReservationModal(eventId, eventInfo) {
             if (eventInfo.isReceptionClosed) {
                 showAlert('この説明会の受付は現在中止されています。', true);
@@ -397,7 +411,6 @@
             modalContent.innerHTML = '';
         }
 
-        // --- データ操作ハンドラ ---
         async function handleAddReservation(e) {
             e.preventDefault();
             const form = e.target;
@@ -411,7 +424,6 @@
             
             const studentId = `情${studentIdPrefix}-${studentIdSuffix}`;
 
-            // Validation
             const studentIdRegex = /^情\d{2}-\d{1,4}$/;
             if (!studentIdRegex.test(studentId)) {
                 showAlert('学籍番号は「情XX-YYYY」の形式で入力してください。', true); return;
@@ -428,7 +440,6 @@
             try {
                 const reservationsRef = collection(db, 'reservations');
                 
-                // 重複予約チェック
                 const qPhone = query(reservationsRef, where("phoneNumber", "==", phoneNumber));
                 const phoneSnapshot = await getDocs(qPhone);
                 let hasActiveReservation = false;
@@ -444,7 +455,6 @@
                     showAlert('この電話番号は既に有効な予約があります。', true); return;
                 }
                 
-                // 最終チェック（手動での受付中止を含む）
                 const event = allEventsCache.find(e => e.id === eventId);
                 if (event?.isReceptionClosed) {
                     showAlert('申し訳ありません、この説明会の受付は中止されました。', true);
@@ -461,8 +471,8 @@
                 showAlert('予約が完了しました。');
                 closeModal();
             } catch(error) {
-                 console.error("予約に失敗: ", error);
-                 showAlert('予約に失敗しました。', true);
+                console.error("予約に失敗: ", error);
+                showAlert('予約に失敗しました。', true);
             }
         }
 
@@ -508,7 +518,6 @@
             }
         }
 
-        // --- ユーティリティ関数 ---
         function formatDateTimeRange(isoStart, isoEnd) {
             try {
                 const startDate = new Date(isoStart);
@@ -524,9 +533,7 @@
             }
         }
         
-        // グローバルスコープに関数を公開
         window.closeModal = closeModal;
-        // --- 初期化処理の実行 ---
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
