@@ -206,6 +206,23 @@
         let currentCalendarDate = new Date();
         let currentViewMode = 'list';
 
+        // GAS Web App URL (Google Apps ScriptのWebアプリURLをここに設定してください)
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwfKdtibG21jqXavTXc3W2mqsuq-JuGoT0U3GgTRr_hbE0Ko79h5I0YSrBuAjZDvrINgw/exec";
+
+        async function sendGasEmail(payload) {
+            if (!GAS_WEB_APP_URL) return;
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                console.error("GAS メール送信エラー:", err);
+            }
+        }
+
         // 連打・重複処理防止フラグ
         let isSubmittingReservation = false;
         let isCancelingReservation = false;
@@ -938,6 +955,23 @@
                 }
 
                 await addDoc(reservationsRef, reservationData);
+
+                // 管理者への通知メール送信 (GAS経由)
+                sendGasEmail({
+                    action: 'notifyAdmin',
+                    eventInfo: {
+                        startTime: event ? formatDateTimeRange(event.startTime, event.endTime) : '日時不明',
+                        location: event ? event.location : '場所不明'
+                    },
+                    reservationInfo: {
+                        name,
+                        nameKana,
+                        studentId,
+                        email,
+                        phoneNumber
+                    }
+                });
+
                 showAlert('予約が完了しました。');
                 closeModal();
             } catch(error) {
