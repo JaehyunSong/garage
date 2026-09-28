@@ -345,6 +345,39 @@
             renderCalendarGrid();
         }
 
+        // 予約締め切り日時を取得するヘルパー関数
+        // 午前枠（12:00未満スタート）: 前日24:00 (＝説明会当日の00:00:00)
+        // 午後枠（12:00以降スタート）: 開催1時間前
+        function getBookingDeadline(isoStart) {
+            const eventStartTime = new Date(isoStart);
+            const hours = eventStartTime.getHours();
+            if (hours < 12) {
+                const deadline = new Date(eventStartTime);
+                deadline.setHours(0, 0, 0, 0);
+                return deadline;
+            } else {
+                return new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+            }
+        }
+
+        // 締め切りまでの残り時間を文字列に変換するヘルパー関数 (例: 「1日2時間30分」)
+        function formatRemainingTime(deadline, now = new Date()) {
+            const diffMs = deadline.getTime() - now.getTime();
+            if (diffMs <= 0) return null;
+
+            const totalSecs = Math.floor(diffMs / 1000);
+            const days = Math.floor(totalSecs / (24 * 3600));
+            const hours = Math.floor((totalSecs % (24 * 3600)) / 3600);
+            const mins = Math.floor((totalSecs % 3600) / 60);
+
+            let parts = [];
+            if (days > 0) parts.push(`${days}日`);
+            if (hours > 0 || days > 0) parts.push(`${hours}時間`);
+            parts.push(`${mins}分`);
+
+            return parts.join('');
+        }
+
         function renderUserEventsList(events, reservations) {
             if (events.length === 0) {
                 eventsListContainer.innerHTML = '<div class="text-center p-8 bg-white rounded-lg shadow"><p class="text-gray-500">現在、予約可能な説明会はありません。</p></div>';
@@ -364,10 +397,12 @@
                     : 0;
 
                 const now = new Date();
-                const eventStartTime = new Date(event.startTime);
-                const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+                const bookingDeadline = getBookingDeadline(event.startTime);
                 const isPastDeadline = now > bookingDeadline;
                 const isManuallyClosed = event.isReceptionClosed === true;
+
+                const remainingTimeStr = formatRemainingTime(bookingDeadline, now);
+                const remainingDeadlineBadge = remainingTimeStr ? `<span class="text-xs font-normal opacity-85 ml-1.5">(〆：${remainingTimeStr}後)</span>` : '';
                 
                 let statusBadge;
                 let progressBarColor = 'bg-green-500';
@@ -382,15 +417,15 @@
                     statusBadge = `<span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">受付終了</span>`;
                     progressBarColor = 'bg-gray-400';
                 } else if (remainingRatio <= 0.3) {
-                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">残りわずか</span>`;
+                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded inline-flex items-center flex-wrap">残りわずか${remainingDeadlineBadge}</span>`;
                     progressBarColor = 'bg-yellow-500';
                 } else if (remainingRatio <= 0.5) {
                     // 残り30%超過〜50%以下: テキストは「空きあり」、色はブルー
-                    statusBadge = `<span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">空きあり</span>`;
+                    statusBadge = `<span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded inline-flex items-center flex-wrap">空きあり${remainingDeadlineBadge}</span>`;
                     progressBarColor = 'bg-blue-500';
                 } else {
                     // 残り50%超過: テキストは「空きあり」、色はグリーン
-                    statusBadge = `<span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">空きあり</span>`;
+                    statusBadge = `<span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded inline-flex items-center flex-wrap">空きあり${remainingDeadlineBadge}</span>`;
                     progressBarColor = 'bg-green-500';
                 }
 
@@ -414,7 +449,7 @@
                 eventCard.className = 'bg-white p-6 rounded-lg shadow-md transition hover:shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6';
                 eventCard.innerHTML = `
                     <div class="flex-grow w-full">
-                        <div class="flex items-center gap-4 mb-2">
+                        <div class="flex items-center gap-4 mb-2 flex-wrap">
                             <h3 class="text-xl font-bold text-gray-800">${formatDateTimeRange(event.startTime, event.endTime)}</h3>
                             ${statusBadge}
                         </div>
@@ -618,8 +653,7 @@
                             const remainingRatio = event.capacity > 0 ? (remaining / event.capacity) : 0;
                             const isFull = remaining <= 0;
 
-                            const eventStartTime = new Date(event.startTime);
-                            const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+                            const bookingDeadline = getBookingDeadline(event.startTime);
                             const isPastDeadline = now > bookingDeadline;
                             const isManuallyClosed = event.isReceptionClosed === true;
 
@@ -642,11 +676,9 @@
                                 badgeStyle = 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100';
                                 statusLabel = '残りわずか';
                             } else if (remainingRatio <= 0.5) {
-                                // 残り30%超過〜50%以下: テキストは「空きあり」、色はスカイブルー
                                 badgeStyle = 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100';
                                 statusLabel = '空きあり';
                             } else {
-                                // 残り50%超過: テキストは「空きあり」、色はエメラルドグリーン
                                 badgeStyle = 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100';
                                 statusLabel = '空きあり';
                             }
@@ -717,8 +749,7 @@
             }
 
             const now = new Date();
-            const eventStartTime = new Date(eventInfo.startTime);
-            const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+            const bookingDeadline = getBookingDeadline(eventInfo.startTime);
             
             if (now > bookingDeadline) {
                 showAlert('この説明会の予約受付は終了しました。', true);
@@ -979,6 +1010,13 @@
                 return '日時形式エラー';
             }
         }
+
+        // 1分ごとに表示を自動更新して残りカウントダウンを最新に保つ（DBアクセスゼロの純フロントエンド処理）
+        setInterval(() => {
+            if (currentViewMode === 'list' && upcomingEventsCache.length > 0) {
+                renderUserEventsList(upcomingEventsCache, allReservationsCache);
+            }
+        }, 60000);
         
         window.closeModal = closeModal;
         document.addEventListener('DOMContentLoaded', initialize);
