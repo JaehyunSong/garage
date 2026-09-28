@@ -38,6 +38,15 @@
         .markdown-content p:last-child { margin-bottom: 0; }
         .markdown-content code { background-color: #e5e7eb; padding: 0.1rem 0.3rem; border-radius: 0.25rem; font-size: 0.85em; font-family: monospace; }
         .markdown-content blockquote { border-left: 3px solid #cbd5e1; padding-left: 0.75rem; color: #64748b; margin: 0.25rem 0; }
+
+        /* カレンダー内スクロールバー */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -64,12 +73,60 @@
         <!-- 予約者向けビュー -->
         <main id="user-view">
             <section class="mb-12">
-                <h2 class="text-2xl font-semibold mb-4 border-l-4 border-blue-500 pl-3">開催予定のオフィスアワー</h2>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <h2 class="text-2xl font-semibold border-l-4 border-blue-500 pl-3">開催予定のオフィスアワー</h2>
+                    
+                    <!-- ビュー切り替えボタン -->
+                    <div class="inline-flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm self-start sm:self-auto">
+                        <button id="view-mode-list-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-md bg-blue-500 text-white transition shadow-sm">
+                            <i class="fas fa-list mr-2"></i>リスト表示
+                        </button>
+                        <button id="view-mode-calendar-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition">
+                            <i class="fas fa-calendar-alt mr-2"></i>カレンダー表示
+                        </button>
+                    </div>
+                </div>
+
+                <!-- リスト表示コンテナ -->
                 <div id="events-list" class="space-y-4">
                     <!-- 説明会情報がここに動的に追加されます -->
                     <div class="text-center p-8 bg-white rounded-lg shadow">
                         <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
                         <p class="mt-2 text-gray-500">説明会を読み込んでいます...</p>
+                    </div>
+                </div>
+
+                <!-- カレンダー表示コンテナ (初期非表示) -->
+                <div id="events-calendar-container" class="hidden bg-white p-4 md:p-6 rounded-lg shadow-md">
+                    <!-- カレンダーヘッダー (月移動ナビゲーション) -->
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+                        <div class="flex items-center gap-2">
+                            <button id="cal-prev-month" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition text-sm flex items-center">
+                                <i class="fas fa-chevron-left mr-1"></i>前月
+                            </button>
+                            <button id="cal-today" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 font-medium rounded-md transition text-sm">
+                                今月
+                            </button>
+                            <button id="cal-next-month" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition text-sm flex items-center">
+                                次月<i class="fas fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                        <h3 id="cal-month-title" class="text-xl md:text-2xl font-bold text-gray-800">
+                            -
+                        </h3>
+                    </div>
+
+                    <!-- 曜日ヘッダー (月〜金) -->
+                    <div class="grid grid-cols-5 text-center font-bold text-sm bg-gray-50 py-2 rounded-t-md border border-gray-200">
+                        <div>月</div>
+                        <div>火</div>
+                        <div>水</div>
+                        <div>木</div>
+                        <div>金</div>
+                    </div>
+                    <!-- 日付セルグリッド (5列) -->
+                    <div id="cal-days-grid" class="grid grid-cols-5 border-l border-b border-r border-gray-200 bg-gray-200 gap-px">
+                        <!-- JSで動的に追加 -->
                     </div>
                 </div>
             </section>
@@ -144,6 +201,15 @@
         let db, auth;
         let unsubscribeEvents, unsubscribeReservations;
         let allEventsCache = [];
+        let upcomingEventsCache = [];
+        let allReservationsCache = [];
+        let currentCalendarDate = new Date();
+        let currentViewMode = 'list';
+
+        // 連打・重複処理防止フラグ
+        let isSubmittingReservation = false;
+        let isCancelingReservation = false;
+        let isSearchingReservation = false;
 
         async function initialize() {
             if (!firebaseConfig || !firebaseConfig.apiKey) {
@@ -172,11 +238,31 @@
         }
 
         const eventsListContainer = document.getElementById('events-list');
+        const eventsCalendarContainer = document.getElementById('events-calendar-container');
         const pastEventsListContainer = document.getElementById('past-events-list');
         const modalContainer = document.getElementById('modal-container');
         const modalContent = document.getElementById('modal-content');
         const searchReservationButton = document.getElementById('search-reservation-button');
         const cancelPhoneNumberInput = document.getElementById('cancel-phone-number');
+
+        const viewListBtn = document.getElementById('view-mode-list-btn');
+        const viewCalendarBtn = document.getElementById('view-mode-calendar-btn');
+
+        viewListBtn.addEventListener('click', () => setViewMode('list'));
+        viewCalendarBtn.addEventListener('click', () => setViewMode('calendar'));
+
+        document.getElementById('cal-prev-month').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            renderCalendarGrid();
+        });
+        document.getElementById('cal-next-month').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            renderCalendarGrid();
+        });
+        document.getElementById('cal-today').addEventListener('click', () => {
+            currentCalendarDate = new Date();
+            renderCalendarGrid();
+        });
 
         searchReservationButton.addEventListener('click', handleSearchReservation);
         modalContainer.addEventListener('click', (e) => {
@@ -187,6 +273,25 @@
                 closeModal();
             }
         });
+
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            if (mode === 'list') {
+                eventsListContainer.classList.remove('hidden');
+                eventsCalendarContainer.classList.add('hidden');
+                
+                viewListBtn.className = 'flex items-center px-4 py-2 text-sm font-medium rounded-md bg-blue-500 text-white transition shadow-sm';
+                viewCalendarBtn.className = 'flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition';
+            } else {
+                eventsListContainer.classList.add('hidden');
+                eventsCalendarContainer.classList.remove('hidden');
+
+                viewCalendarBtn.className = 'flex items-center px-4 py-2 text-sm font-medium rounded-md bg-blue-500 text-white transition shadow-sm';
+                viewListBtn.className = 'flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition';
+
+                renderCalendarGrid();
+            }
+        }
 
         function showAlert(message, isError = false) {
             const title = isError ? 'エラー' : '通知';
@@ -231,11 +336,13 @@
         
         function renderAll(events, reservations) {
             const now = new Date();
-            const upcomingEvents = events.filter(e => new Date(e.endTime) >= now).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+            upcomingEventsCache = events.filter(e => new Date(e.endTime) >= now).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
             const pastEvents = events.filter(e => new Date(e.endTime) < now).sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+            allReservationsCache = reservations;
 
-            renderUserEventsList(upcomingEvents, reservations);
+            renderUserEventsList(upcomingEventsCache, reservations);
             renderPastEventsList(pastEvents);
+            renderCalendarGrid();
         }
 
         function renderUserEventsList(events, reservations) {
@@ -250,18 +357,12 @@
                 const reservedCount = eventReservations.length;
                 const remaining = event.capacity - reservedCount;
                 const isFull = remaining <= 0;
+                const remainingRatio = event.capacity > 0 ? (remaining / event.capacity) : 0;
 
                 const occupancyRate = event.capacity > 0 
                     ? Math.min(Math.round((reservedCount / event.capacity) * 100), 100) 
                     : 0;
 
-                let progressBarColor = 'bg-blue-500';
-                if (isFull) {
-                    progressBarColor = 'bg-red-500';
-                } else if (occupancyRate >= 80) {
-                    progressBarColor = 'bg-yellow-500';
-                }
-                
                 const now = new Date();
                 const eventStartTime = new Date(event.startTime);
                 const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
@@ -269,16 +370,28 @@
                 const isManuallyClosed = event.isReceptionClosed === true;
                 
                 let statusBadge;
+                let progressBarColor = 'bg-green-500';
+
                 if (isManuallyClosed) {
                     statusBadge = `<span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">受付中止</span>`;
+                    progressBarColor = 'bg-gray-400';
                 } else if (isFull) {
                     statusBadge = `<span class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">満員</span>`;
+                    progressBarColor = 'bg-red-500';
                 } else if (isPastDeadline) {
                     statusBadge = `<span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">受付終了</span>`;
-                } else if (remaining / event.capacity <= 0.3) {
+                    progressBarColor = 'bg-gray-400';
+                } else if (remainingRatio <= 0.3) {
                     statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">残りわずか</span>`;
+                    progressBarColor = 'bg-yellow-500';
+                } else if (remainingRatio <= 0.5) {
+                    // 残り30%超過〜50%以下: テキストは「空きあり」、色はブルー
+                    statusBadge = `<span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">空きあり</span>`;
+                    progressBarColor = 'bg-blue-500';
                 } else {
+                    // 残り50%超過: テキストは「空きあり」、色はグリーン
                     statusBadge = `<span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">空きあり</span>`;
+                    progressBarColor = 'bg-green-500';
                 }
 
                 let actionAreaHTML;
@@ -328,6 +441,251 @@
                 button.addEventListener('click', (e) => showReservationModal(e.currentTarget.dataset.eventId, JSON.parse(unescape(e.currentTarget.dataset.eventInfo))));
             });
         }
+
+        // 月〜金（平日）のみのカレンダーセルデータを取得するヘルパー関数
+        function getMonFriCalendarDays(year, month) {
+            const cells = [];
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const totalDays = lastDay.getDate();
+
+            // 月曜日(1)〜金曜日(5)のインデックス。土(6)・日(0)はスキップ。
+            const firstDow = firstDay.getDay();
+            let startOffset = 0;
+            if (firstDow >= 1 && firstDow <= 5) {
+                startOffset = firstDow - 1;
+            }
+
+            // 1. 前月パディング（平日のみ）
+            if (startOffset > 0) {
+                let curr = new Date(year, month, 1);
+                let added = 0;
+                const prevWeekdays = [];
+                while (added < startOffset) {
+                    curr.setDate(curr.getDate() - 1);
+                    const dow = curr.getDay();
+                    if (dow !== 0 && dow !== 6) {
+                        prevWeekdays.unshift({
+                            dateNum: curr.getDate(),
+                            month: curr.getMonth(),
+                            year: curr.getFullYear(),
+                            isCurrentMonth: false
+                        });
+                        added++;
+                    }
+                }
+                cells.push(...prevWeekdays);
+            }
+
+            // 2. 当月平日
+            for (let d = 1; d <= totalDays; d++) {
+                const dateObj = new Date(year, month, d);
+                const dow = dateObj.getDay();
+                if (dow !== 0 && dow !== 6) {
+                    cells.push({
+                        dateNum: d,
+                        month: month,
+                        year: year,
+                        isCurrentMonth: true
+                    });
+                }
+            }
+
+            // 3. 翌月パディング（5列の倍数にする）
+            const remainder = cells.length % 5;
+            if (remainder > 0) {
+                const fillCount = 5 - remainder;
+                let curr = new Date(year, month + 1, 1);
+                let added = 0;
+                while (added < fillCount) {
+                    const dow = curr.getDay();
+                    if (dow !== 0 && dow !== 6) {
+                        cells.push({
+                            dateNum: curr.getDate(),
+                            month: curr.getMonth(),
+                            year: curr.getFullYear(),
+                            isCurrentMonth: false
+                        });
+                        added++;
+                    }
+                    curr.setDate(curr.getDate() + 1);
+                }
+            }
+
+            return cells;
+        }
+
+        // 大学の時間割の「何限目」かに変換するヘルパー関数
+        function getPeriodLabel(isoStart) {
+            try {
+                const d = new Date(isoStart);
+                const hours = d.getHours();
+                const mins = d.getMinutes();
+                const totalMins = hours * 60 + mins;
+
+                // 09:00~10:30 は 1限 (510〜635分)
+                if (totalMins >= 510 && totalMins <= 635) return "1限";
+                // 10:40~12:10 は 2限 (636〜730分)
+                if (totalMins >= 636 && totalMins <= 730) return "2限";
+                // 12:10~13:00 は 昼休 (731〜779分)
+                if (totalMins > 730 && totalMins < 780) return "昼休";
+                // 13:00~14:30 は 3限 (780〜875分)
+                if (totalMins >= 780 && totalMins <= 875) return "3限";
+                // 14:40~16:10 は 4限 (876〜975分)
+                if (totalMins >= 876 && totalMins <= 975) return "4限";
+                // 16:20~17:50 は 5限 (976〜1080分)
+                if (totalMins >= 976 && totalMins <= 1080) return "5限";
+
+                return null;
+            } catch(e) {
+                return null;
+            }
+        }
+
+        // カレンダー表示用の時間ラベル（例: 「1限（09:00〜）」）
+        function getCalendarPeriodText(isoStart) {
+            try {
+                const d = new Date(isoStart);
+                const timeStr = d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+                const period = getPeriodLabel(isoStart);
+                if (period) {
+                    return `${period}（${timeStr}〜）`;
+                }
+                return `${timeStr}〜`;
+            } catch(e) {
+                return '';
+            }
+        }
+
+        function renderCalendarGrid() {
+            if (!eventsCalendarContainer || eventsCalendarContainer.classList.contains('hidden')) {
+                // 非表示時もタイトル更新のみ行う
+            }
+
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+
+            const monthTitleEl = document.getElementById('cal-month-title');
+            if (monthTitleEl) {
+                monthTitleEl.textContent = `${year}年 ${month + 1}月`;
+            }
+
+            const gridContainer = document.getElementById('cal-days-grid');
+            if (!gridContainer) return;
+            gridContainer.innerHTML = '';
+
+            const now = new Date();
+            const todayY = now.getFullYear();
+            const todayM = now.getMonth();
+            const todayD = now.getDate();
+
+            // 月〜金（平日）セルデータ生成
+            const cells = getMonFriCalendarDays(year, month);
+
+            cells.forEach(cellData => {
+                const cell = document.createElement('div');
+                const isCurrentMonth = cellData.isCurrentMonth;
+
+                if (!isCurrentMonth) {
+                    cell.className = 'bg-gray-50 p-1 md:p-2 min-h-[90px] md:min-h-[110px] text-gray-400 text-xs';
+                    cell.innerHTML = `<div class="text-right font-medium opacity-40">${cellData.dateNum}</div>`;
+                } else {
+                    const day = cellData.dateNum;
+                    const isToday = (year === todayY && month === todayM && day === todayD);
+
+                    cell.className = `bg-white p-1 md:p-2 min-h-[90px] md:min-h-[110px] flex flex-col justify-start transition ${isToday ? 'bg-blue-50/60 ring-2 ring-blue-400 z-10' : ''}`;
+
+                    // この日のイベント抽出
+                    const dayEvents = upcomingEventsCache.filter(e => {
+                        const ed = new Date(e.startTime);
+                        return ed.getFullYear() === year && ed.getMonth() === month && ed.getDate() === day;
+                    });
+
+                    let dayHeaderHTML = '';
+                    if (isToday) {
+                        dayHeaderHTML = `<div class="flex justify-between items-center mb-1"><span class="text-[10px] font-bold text-blue-600 bg-blue-100 px-1 rounded">今日</span><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">${day}</span></div>`;
+                    } else {
+                        dayHeaderHTML = `<div class="text-right font-semibold text-gray-700 mb-1 text-xs md:text-sm">${day}</div>`;
+                    }
+
+                    let eventsHTML = '';
+                    if (dayEvents.length > 0) {
+                        eventsHTML = `<div class="space-y-1.5 overflow-y-auto max-h-[85px] md:max-h-[105px] custom-scrollbar">`;
+                        dayEvents.forEach(event => {
+                            const eventReservations = allReservationsCache.filter(r => r.eventId === event.id);
+                            const reservedCount = eventReservations.length;
+                            const remaining = event.capacity - reservedCount;
+                            const remainingRatio = event.capacity > 0 ? (remaining / event.capacity) : 0;
+                            const isFull = remaining <= 0;
+
+                            const eventStartTime = new Date(event.startTime);
+                            const bookingDeadline = new Date(eventStartTime.getTime() - (60 * 60 * 1000));
+                            const isPastDeadline = now > bookingDeadline;
+                            const isManuallyClosed = event.isReceptionClosed === true;
+
+                            // カレンダー表示は「X限（00:00〜）」の形式
+                            const periodText = getCalendarPeriodText(event.startTime);
+
+                            let badgeStyle = 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300';
+                            let statusLabel = '空きあり';
+
+                            if (isManuallyClosed) {
+                                badgeStyle = 'bg-gray-100 text-gray-600 border-gray-200 cursor-not-allowed';
+                                statusLabel = '中止';
+                            } else if (isPastDeadline) {
+                                badgeStyle = 'bg-gray-100 text-gray-600 border-gray-200 cursor-not-allowed';
+                                statusLabel = '終了';
+                            } else if (isFull) {
+                                badgeStyle = 'bg-red-50 text-red-800 border-red-200 cursor-not-allowed';
+                                statusLabel = '満員';
+                            } else if (remainingRatio <= 0.3) {
+                                badgeStyle = 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100';
+                                statusLabel = '残りわずか';
+                            } else if (remainingRatio <= 0.5) {
+                                // 残り30%超過〜50%以下: テキストは「空きあり」、色はスカイブルー
+                                badgeStyle = 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100';
+                                statusLabel = '空きあり';
+                            } else {
+                                // 残り50%超過: テキストは「空きあり」、色はエメラルドグリーン
+                                badgeStyle = 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100';
+                                statusLabel = '空きあり';
+                            }
+
+                            const canReserve = !isManuallyClosed && !isPastDeadline && !isFull;
+                            const clickAttr = canReserve 
+                                ? `onclick="window.handleCalendarEventClick('${event.id}')"` 
+                                : `onclick="window.handleCalendarEventDisabledClick('${statusLabel}')"`;
+
+                            eventsHTML += `
+                                <div ${clickAttr} class="p-1.5 rounded border ${badgeStyle} text-[11px] leading-tight cursor-pointer transition shadow-xs flex flex-col gap-0.5">
+                                    <div class="font-bold flex justify-between items-center">
+                                        <span><i class="far fa-clock mr-0.5"></i>${periodText}</span>
+                                        <span class="text-[9px] px-1 rounded bg-white/80 font-normal border border-gray-200">${statusLabel}</span>
+                                    </div>
+                                    <div class="text-[9px] text-gray-500 font-medium">残: ${remaining > 0 ? remaining : 0}/${event.capacity}名</div>
+                                </div>
+                            `;
+                        });
+                        eventsHTML += `</div>`;
+                    }
+
+                    cell.innerHTML = dayHeaderHTML + eventsHTML;
+                }
+
+                gridContainer.appendChild(cell);
+            });
+        }
+
+        window.handleCalendarEventClick = function(eventId) {
+            const eventInfo = allEventsCache.find(e => e.id === eventId);
+            if (eventInfo) {
+                showReservationModal(eventId, eventInfo);
+            }
+        };
+
+        window.handleCalendarEventDisabledClick = function(statusLabel) {
+            showAlert(`この説明会は現在「${statusLabel}」のため予約できません。`, true);
+        };
         
         function renderPastEventsList(events) {
             if (events.length === 0) {
@@ -394,7 +752,7 @@
                             <div class="mb-4 p-3 bg-yellow-50 rounded-lg text-sm">
                                 <p><strong>※注意:</strong> 予約の確認・キャンセル時に電話番号が必要になりますので、お間違えのないようご入力ください。</p>
                             </div>
-                            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 rounded-md hover:bg-blue-600 transition">予約を確定する</button>
+                            <button type="submit" id="submit-reservation-btn" class="w-full bg-blue-500 text-white font-bold py-3 rounded-md hover:bg-blue-600 transition">予約を確定する</button>
                         </div>
                     </form>
                 </div>
@@ -423,17 +781,26 @@
                 </div>
             `;
             modalContainer.classList.remove('hidden');
-            document.getElementById('confirm-cancel-button').addEventListener('click', (e) => handleCancelReservation(e.currentTarget.dataset.reservationId));
+            document.getElementById('confirm-cancel-button').addEventListener('click', (e) => handleCancelReservation(e.currentTarget.dataset.reservationId, e.currentTarget));
         }
 
         function closeModal() {
             modalContainer.classList.add('hidden');
             modalContent.innerHTML = '';
+            // 連打防止フラグのリセット
+            isSubmittingReservation = false;
+            isCancelingReservation = false;
         }
 
         async function handleAddReservation(e) {
             e.preventDefault();
+
+            // 1. 同時連打チェック (すでに処理中の場合は直ちに中断)
+            if (isSubmittingReservation) return;
+
             const form = e.target;
+            const submitButton = form.querySelector('#submit-reservation-btn');
+
             const name = form.querySelector('#name').value.trim();
             const nameKana = form.querySelector('#name-kana').value.trim();
             const studentIdPrefix = form.querySelector('#student-id-prefix').value.trim();
@@ -455,6 +822,25 @@
                 showAlert('電話番号はハイフンなしの11桁で入力してください。', true); return;
             }
 
+            // 入力検証通過後、フラグを設定してボタンを無効化＆ローディング表示化
+            isSubmittingReservation = true;
+            let originalButtonText = '';
+            if (submitButton) {
+                originalButtonText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>予約処理中...`;
+            }
+
+            const restoreSubmitButton = () => {
+                isSubmittingReservation = false;
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    submitButton.innerHTML = originalButtonText;
+                }
+            };
+
             const reservationData = { eventId, name, nameKana, studentId, email, phoneNumber, createdAt: serverTimestamp() };
             
             try {
@@ -472,19 +858,23 @@
                     }
                 }
                 if (hasActiveReservation) {
-                    showAlert('この電話番号は既に有効な予約があります。', true); return;
+                    showAlert('この電話番号は既に有効な予約があります。', true);
+                    restoreSubmitButton();
+                    return;
                 }
                 
                 const event = allEventsCache.find(e => e.id === eventId);
                 if (event?.isReceptionClosed) {
                     showAlert('申し訳ありません、この説明会の受付は中止されました。', true);
-                    closeModal(); return;
+                    closeModal();
+                    return;
                 }
                 const qCapacity = query(reservationsRef, where("eventId", "==", eventId));
                 const capacitySnapshot = await getDocs(qCapacity);
                 if (capacitySnapshot.size >= (event?.capacity || 0)) {
                     showAlert('申し訳ありません、この説明会は満員になりました。', true);
-                    closeModal(); return;
+                    closeModal();
+                    return;
                 }
 
                 await addDoc(reservationsRef, reservationData);
@@ -493,14 +883,23 @@
             } catch(error) {
                 console.error("予約に失敗: ", error);
                 showAlert('予約に失敗しました。', true);
+                restoreSubmitButton();
             }
         }
 
         async function handleSearchReservation() {
+            if (isSearchingReservation) return;
+
             const phoneNumber = cancelPhoneNumberInput.value.trim();
             if (!/^\d{11}$/.test(phoneNumber)) {
                 showAlert('電話番号はハイフンなしの11桁で入力してください。', true); return;
             }
+
+            isSearchingReservation = true;
+            const originalButtonHTML = searchReservationButton.innerHTML;
+            searchReservationButton.disabled = true;
+            searchReservationButton.classList.add('opacity-50', 'cursor-not-allowed');
+            searchReservationButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>検索中...`;
 
             try {
                 const q = query(collection(db, 'reservations'), where("phoneNumber", "==", phoneNumber));
@@ -523,10 +922,26 @@
             } catch (error) {
                 console.error("予約の検索に失敗: ", error);
                 showAlert('予約の検索中にエラーが発生しました。', true);
+            } finally {
+                isSearchingReservation = false;
+                searchReservationButton.disabled = false;
+                searchReservationButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                searchReservationButton.innerHTML = originalButtonHTML;
             }
         }
 
-        async function handleCancelReservation(reservationId) {
+        async function handleCancelReservation(reservationId, buttonEl) {
+            if (isCancelingReservation) return;
+            isCancelingReservation = true;
+
+            let originalText = '';
+            if (buttonEl) {
+                originalText = buttonEl.innerHTML;
+                buttonEl.disabled = true;
+                buttonEl.classList.add('opacity-50', 'cursor-not-allowed');
+                buttonEl.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>キャンセル中...`;
+            }
+
             try {
                 await deleteDoc(doc(db, 'reservations', reservationId));
                 showAlert('予約をキャンセルしました。');
@@ -535,9 +950,17 @@
             } catch(error) {
                 console.error("予約のキャンセルに失敗: ", error);
                 showAlert('キャンセルに失敗しました。', true);
+                if (buttonEl) {
+                    buttonEl.disabled = false;
+                    buttonEl.classList.remove('opacity-50', 'cursor-not-allowed');
+                    buttonEl.innerHTML = originalText;
+                }
+            } finally {
+                isCancelingReservation = false;
             }
         }
 
+        // リスト表示用の時間帯フォーマット（例: 「2026/9/28(月) 09:00 - 10:30（1限）」）
         function formatDateTimeRange(isoStart, isoEnd) {
             try {
                 const startDate = new Date(isoStart);
@@ -547,7 +970,11 @@
                 const dateStr = new Intl.DateTimeFormat('ja-JP', optionsDate).format(startDate);
                 const startTimeStr = new Intl.DateTimeFormat('ja-JP', optionsTime).format(startDate);
                 const endTimeStr = new Intl.DateTimeFormat('ja-JP', optionsTime).format(endDate);
-                return `${dateStr} ${startTimeStr} - ${endTimeStr}`;
+
+                const period = getPeriodLabel(isoStart);
+                const periodSuffix = period ? `（${period}）` : '';
+
+                return `${dateStr} ${startTimeStr} - ${endTimeStr}${periodSuffix}`;
             } catch(e) {
                 return '日時形式エラー';
             }
