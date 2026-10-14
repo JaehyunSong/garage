@@ -47,6 +47,11 @@
             background: #cbd5e1;
             border-radius: 2px;
         }
+
+        /* スマートフォンSafari・ブラウザのタスクバーとモーダル下部の重なり防止 */
+        #modal-container {
+            padding-bottom: max(6rem, calc(3rem + env(safe-area-inset-bottom)));
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -161,11 +166,11 @@
     </div>
 
     <!-- モーダル -->
-    <div id="modal-container" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div id="modal-container" class="hidden fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
         <!-- オーバーレイ -->
         <div class="modal-backdrop fixed inset-0"></div>
         <!-- モーダルコンテンツ -->
-        <div id="modal-content" class="modal-content relative bg-white rounded-lg shadow-xl w-full max-w-lg animate-fade-in">
+        <div id="modal-content" class="modal-content relative bg-white rounded-xl shadow-xl w-full max-w-lg my-auto animate-fade-in">
             <!-- コンテンツはJSで動的に挿入 -->
         </div>
     </div>
@@ -176,6 +181,10 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
+            initializeFirestore,
+            persistentLocalCache,
+            persistentMultipleTabManager,
+            increment,
             collection, 
             onSnapshot, 
             addDoc, 
@@ -199,10 +208,9 @@
         };
         
         let db, auth;
-        let unsubscribeEvents, unsubscribeReservations;
+        let unsubscribeEvents;
         let allEventsCache = [];
         let upcomingEventsCache = [];
-        let allReservationsCache = [];
         let currentCalendarDate = new Date();
         let currentViewMode = 'list';
 
@@ -236,7 +244,16 @@
             }
             try {
                 const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
+                try {
+                    db = initializeFirestore(app, {
+                        localCache: persistentLocalCache({
+                            tabManager: persistentMultipleTabManager()
+                        })
+                    });
+                } catch (cacheErr) {
+                    console.warn("ローカルキャッシュ初期化フォールバック:", cacheErr);
+                    db = getFirestore(app);
+                }
                 auth = getAuth(app);
                 setLogLevel('error');
 
@@ -283,7 +300,7 @@
 
         searchReservationButton.addEventListener('click', handleSearchReservation);
         modalContainer.addEventListener('click', (e) => {
-            if (e.target === modalContainer) closeModal();
+            if (e.target === modalContainer || e.target.classList.contains('modal-backdrop')) closeModal();
         });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !modalContainer.classList.contains('hidden')) {
@@ -329,35 +346,23 @@
 
         function subscribeToData() {
             if (unsubscribeEvents) unsubscribeEvents();
-            if (unsubscribeReservations) unsubscribeReservations();
 
             const eventsRef = collection(db, 'events');
-            const reservationsRef = collection(db, 'reservations');
-            
-            let allReservations = [];
             
             unsubscribeEvents = onSnapshot(query(eventsRef), (querySnapshot) => {
                 allEventsCache = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderAll(allEventsCache, allReservations);
+                renderAll(allEventsCache);
             }, (error) => {
                 console.error("説明会データの取得に失敗: ", error);
             });
-            
-            unsubscribeReservations = onSnapshot(reservationsRef, (querySnapshot) => {
-                allReservations = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderAll(allEventsCache, allReservations);
-            }, (error) => {
-                console.error("予約データの取得に失敗: ", error);
-            });
         }
         
-        function renderAll(events, reservations) {
+        function renderAll(events) {
             const now = new Date();
             upcomingEventsCache = events.filter(e => new Date(e.endTime) >= now).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
             const pastEvents = events.filter(e => new Date(e.endTime) < now).sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
-            allReservationsCache = reservations;
 
-            renderUserEventsList(upcomingEventsCache, reservations);
+            renderUserEventsList(upcomingEventsCache);
             renderPastEventsList(pastEvents);
             renderCalendarGrid();
         }
@@ -395,7 +400,7 @@
             return parts.join('');
         }
 
-        function renderUserEventsList(events, reservations) {
+        function renderUserEventsList(events) {
             if (events.length === 0) {
                 eventsListContainer.innerHTML = '<div class="text-center p-8 bg-white rounded-lg shadow"><p class="text-gray-500">現在、予約可能な説明会はありません。</p></div>';
                 return;
@@ -403,8 +408,7 @@
 
             eventsListContainer.innerHTML = '';
             events.forEach(event => {
-                const eventReservations = reservations.filter(r => r.eventId === event.id);
-                const reservedCount = eventReservations.length;
+                const reservedCount = event.reservedCount || 0;
                 const remaining = event.capacity - reservedCount;
                 const isFull = remaining <= 0;
                 const remainingRatio = event.capacity > 0 ? (remaining / event.capacity) : 0;
@@ -669,8 +673,7 @@
                     if (dayEvents.length > 0) {
                         eventsHTML = `<div class="space-y-1.5 overflow-y-auto max-h-[85px] md:max-h-[105px] custom-scrollbar">`;
                         dayEvents.forEach(event => {
-                            const eventReservations = allReservationsCache.filter(r => r.eventId === event.id);
-                            const reservedCount = eventReservations.length;
+                            const reservedCount = event.reservedCount || 0;
                             const remaining = event.capacity - reservedCount;
                             const remainingRatio = event.capacity > 0 ? (remaining / event.capacity) : 0;
                             const isFull = remaining <= 0;
@@ -819,7 +822,11 @@
                             <div class="mb-4 p-3 bg-yellow-50 rounded-lg text-sm">
                                 <p><strong>※注意:</strong> 予約の確認・キャンセル時に電話番号が必要になりますので、お間違えのないようご入力ください。</p>
                             </div>
-                            <button type="submit" id="submit-reservation-btn" class="w-full bg-blue-500 text-white font-bold py-3 rounded-md hover:bg-blue-600 transition">予約を確定する</button>
+                            <div class="pt-2 pb-6 sm:pb-2">
+                                <button type="submit" id="submit-reservation-btn" class="w-full bg-blue-500 text-white font-bold py-3.5 px-4 rounded-lg hover:bg-blue-600 transition shadow-md text-base flex items-center justify-center">
+                                    <i class="fas fa-check-circle mr-2"></i>予約を確定する
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -843,12 +850,12 @@
                     </div>
                     <div class="flex justify-end gap-4">
                         <button type="button" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-md hover:bg-gray-400" onclick="closeModal()">閉じる</button>
-                        <button id="confirm-cancel-button" data-reservation-id="${reservation.id}" class="bg-red-500 text-white font-bold py-2 px-6 rounded-md hover:bg-red-600">はい、キャンセルします</button>
+                        <button id="confirm-cancel-button" data-reservation-id="${reservation.id}" data-event-id="${reservation.eventId || ''}" class="bg-red-500 text-white font-bold py-2 px-6 rounded-md hover:bg-red-600">はい、キャンセルします</button>
                     </div>
                 </div>
             `;
             modalContainer.classList.remove('hidden');
-            document.getElementById('confirm-cancel-button').addEventListener('click', (e) => handleCancelReservation(e.currentTarget.dataset.reservationId, e.currentTarget));
+            document.getElementById('confirm-cancel-button').addEventListener('click', (e) => handleCancelReservation(e.currentTarget.dataset.reservationId, e.currentTarget.dataset.eventId, e.currentTarget));
         }
 
         function closeModal() {
@@ -946,15 +953,22 @@
                     closeModal();
                     return;
                 }
-                const qCapacity = query(reservationsRef, where("eventId", "==", eventId));
-                const capacitySnapshot = await getDocs(qCapacity);
-                if (capacitySnapshot.size >= (event?.capacity || 0)) {
+                if ((event?.reservedCount || 0) >= (event?.capacity || 0)) {
                     showAlert('申し訳ありません、この説明会は満員になりました。', true);
                     closeModal();
                     return;
                 }
 
                 await addDoc(reservationsRef, reservationData);
+
+                // 説明会ドキュメントの予約者数をインクリメント (+1)
+                try {
+                    await updateDoc(doc(db, 'events', eventId), {
+                        reservedCount: increment(1)
+                    });
+                } catch (incErr) {
+                    console.warn("reservedCount インクリメント失敗:", incErr);
+                }
 
                 // 管理者への通知メール送信 (GAS経由)
                 sendGasEmail({
@@ -1024,7 +1038,7 @@
             }
         }
 
-        async function handleCancelReservation(reservationId, buttonEl) {
+        async function handleCancelReservation(reservationId, eventId, buttonEl) {
             if (isCancelingReservation) return;
             isCancelingReservation = true;
 
@@ -1038,6 +1052,15 @@
 
             try {
                 await deleteDoc(doc(db, 'reservations', reservationId));
+                if (eventId) {
+                    try {
+                        await updateDoc(doc(db, 'events', eventId), {
+                            reservedCount: increment(-1)
+                        });
+                    } catch (decErr) {
+                        console.warn("reservedCount デクリメント失敗:", decErr);
+                    }
+                }
                 showAlert('予約をキャンセルしました。');
                 closeModal();
                 cancelPhoneNumberInput.value = '';
@@ -1077,7 +1100,7 @@
         // 1分ごとに表示を自動更新して残りカウントダウンを最新に保つ（DBアクセスゼロの純フロントエンド処理）
         setInterval(() => {
             if (currentViewMode === 'list' && upcomingEventsCache.length > 0) {
-                renderUserEventsList(upcomingEventsCache, allReservationsCache);
+                renderUserEventsList(upcomingEventsCache);
             }
         }, 60000);
         
